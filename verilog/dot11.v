@@ -1361,9 +1361,11 @@ always @(posedge clock) begin
 
             S_CLOUD_CHECK: begin
                 ofdm_reset_nl <= 1;
+                
                 crc_reset_nl <= 0;
                 crc_count_nl <= crc_count_nl + 1;
-
+                
+                
                 if (crc_count_nl < 24) begin
                     crc_in_stb_nl <= 1;
                     crc_in_vht <= cloud_vht_siga1[crc_count_nl];
@@ -1376,10 +1378,14 @@ always @(posedge clock) begin
                     crc_in_stb_nl <= 0;
                 end else if (crc_count_nl == 35) begin
                     if (crc_out_vht ^ crc_vht) begin
+                        
+                    end else begin
                         cloud_vht_siga_count <= cloud_vht_siga_count + 1'b1;
                         cloud_vht_siga_output <= {cloud_vht_siga1, cloud_vht_siga2};
                     end
                     if (crc_out_ht ^ crc_ht) begin
+                        
+                    end else begin
                         cloud_ht_sig_count <= cloud_ht_sig_count + 1'b1;
                         cloud_ht_sig_output <= {cloud_ht_sig1, cloud_ht_sig2};
                     end

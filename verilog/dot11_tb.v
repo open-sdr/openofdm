@@ -30,6 +30,8 @@ wire receiver_rst;
 ///////////////////////// cloud 80211ac
 wire [4:0] state;
 wire [4:0] state_cloud;
+wire [31:0] cloud_ht_sig_count;
+wire [47:0] cloud_ht_sig_output;
 ////////////////////////////////////////
 
 wire sig_valid = (pkt_header_valid_strobe&pkt_header_valid);
@@ -477,7 +479,9 @@ dot11 dot11_inst (
     
     ////////////////////////////////////// cloud 80211ac
     .state(state),
-    .state_cloud(state_cloud)
+    .state_cloud(state_cloud),
+    .cloud_ht_sig_count(cloud_ht_sig_count),
+    .cloud_ht_sig_output(cloud_ht_sig_output)
 );
 
 /*
