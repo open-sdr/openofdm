@@ -831,14 +831,6 @@ always @(posedge clock) begin
                         rot_eq_count <= 0;
                         normal_eq_count <= 0;
                         state <= S_DETECT_HT;
-                        
-                        //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                        state_cloud <= S_CLOUD_DECODE;
-                        do_descramble_nl <= 0;
-                        num_bits_to_decode_nl <= 96;
-                        pkt_rate_nl <= 4'b1011;
-                        sample_count_vht <= 0;
-                        
                     end else begin
                         //num_bits_to_decode <= (legacy_len+3)<<4;
                         do_descramble <= 1;
@@ -877,6 +869,12 @@ always @(posedge clock) begin
                     num_bits_to_decode <= 96;
                     do_descramble <= 0;
                     state <= S_HT_SIGNAL;
+                    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                    state_cloud <= S_CLOUD_DECODE;
+                    do_descramble_nl <= 0;
+                    num_bits_to_decode_nl <= 96;
+                    pkt_rate_nl <= 4'b1011;
+                    sample_count_vht <= 0;
                 end else if (normal_eq_count > 4) begin
                     //num_bits_to_decode <= (legacy_len+3)<<4;
                     do_descramble <= 1;
@@ -884,6 +882,12 @@ always @(posedge clock) begin
                     pkt_header_valid_strobe <= 1;
                     pkt_begin <= 1;
                     state <= S_DECODE_DATA;
+                    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                    state_cloud <= S_CLOUD_DECODE;
+                    do_descramble_nl <= 0;
+                    num_bits_to_decode_nl <= 96;
+                    pkt_rate_nl <= 4'b1011;
+                    sample_count_vht <= 0;
                 end
             end
 
