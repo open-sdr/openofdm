@@ -27,6 +27,11 @@ reg [31:0] set_data;
 wire demod_is_ongoing;
 wire receiver_rst;
 
+///////////////////////// cloud 80211ac
+wire [4:0] state;
+wire [4:0] state_cloud;
+////////////////////////////////////////
+
 wire sig_valid = (pkt_header_valid_strobe&pkt_header_valid);
 
 integer run_out_of_iq_sample;
@@ -468,7 +473,11 @@ dot11 dot11_inst (
     .demod_is_ongoing(demod_is_ongoing),
     .pkt_header_valid(pkt_header_valid),
     .pkt_header_valid_strobe(pkt_header_valid_strobe),
-    .pkt_len(pkt_len)
+    .pkt_len(pkt_len),
+    
+    ////////////////////////////////////// cloud 80211ac
+    .state(state),
+    .state_cloud(state_cloud)
 );
 
 /*

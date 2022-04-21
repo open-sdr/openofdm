@@ -118,8 +118,11 @@ module dot11 (
     output wire csi_valid,
     
     // for cloud 80211ac
+    output reg [4:0] state_cloud,
     output reg [47:0] cloud_vht_siga_output,
-    output reg [31:0] cloud_vht_siga_count
+    output reg [31:0] cloud_vht_siga_count,
+    output reg [47:0] cloud_ht_sig_output,
+    output reg [31:0] cloud_ht_sig_count
 );
 
 `include "common_params.v"
@@ -292,7 +295,6 @@ assign soft_decoding_nl = soft_decoding_nl_reg;
 reg do_descramble_nl;
 reg [31:0] num_bits_to_decode_nl;
 reg [7:0] pkt_rate_nl;
-reg [4:0] state_cloud;
 // useless
 reg [5:0] demod_out_nl;    // pipe out 
 reg [5:0] demod_soft_bits_nl;
@@ -1271,6 +1273,8 @@ always @(posedge clock) begin
         
         cloud_vht_siga_count <= 0;
         cloud_vht_siga_output <= 0;
+        cloud_ht_sig_count <= 0;
+        cloud_ht_sig_output <= 0;
 
     end else if (enable) begin
         ofdm_enable_nl <= 1;
@@ -1348,9 +1352,11 @@ always @(posedge clock) begin
                 if(byte_count_vht >= 6) begin
                     if(byte_count_ht >= 6) begin
                         state_cloud <= S_CLOUD_CHECK;
+                        crc_count_nl <= 0;
+                        crc_reset_nl <= 1;
+                        crc_in_stb_nl <= 0;
                     end
                 end
-                
             end
 
             S_CLOUD_CHECK: begin
@@ -1370,14 +1376,14 @@ always @(posedge clock) begin
                     crc_in_stb_nl <= 0;
                 end else if (crc_count_nl == 35) begin
                     if (crc_out_vht ^ crc_vht) begin
-                        state_cloud <= S_CLOUD_WAIT;
                         cloud_vht_siga_count <= cloud_vht_siga_count + 1'b1;
                         cloud_vht_siga_output <= {cloud_vht_siga1, cloud_vht_siga2};
-                    end else if (crc_out_ht ^ crc_ht) begin
-                        state_cloud <= S_CLOUD_WAIT;
-                    end else begin
-                        state_cloud <= S_CLOUD_WAIT;
                     end
+                    if (crc_out_ht ^ crc_ht) begin
+                        cloud_ht_sig_count <= cloud_ht_sig_count + 1'b1;
+                        cloud_ht_sig_output <= {cloud_ht_sig1, cloud_ht_sig2};
+                    end
+                    state_cloud <= S_CLOUD_WAIT;
                 end
             end
 
