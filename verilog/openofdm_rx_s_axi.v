@@ -157,11 +157,11 @@
 	reg [C_S_AXI_DATA_WIDTH-1:0]	slv_reg17;
 	reg [C_S_AXI_DATA_WIDTH-1:0]	slv_reg18;
 	reg [C_S_AXI_DATA_WIDTH-1:0]	slv_reg19;*/
-	reg [C_S_AXI_DATA_WIDTH-1:0]	slv_reg20;/*
+	reg [C_S_AXI_DATA_WIDTH-1:0]	slv_reg20;
 	reg [C_S_AXI_DATA_WIDTH-1:0]	slv_reg21;
 	reg [C_S_AXI_DATA_WIDTH-1:0]	slv_reg22;
 	reg [C_S_AXI_DATA_WIDTH-1:0]	slv_reg23;
-	reg [C_S_AXI_DATA_WIDTH-1:0]	slv_reg24;
+	reg [C_S_AXI_DATA_WIDTH-1:0]	slv_reg24;/*
 	reg [C_S_AXI_DATA_WIDTH-1:0]	slv_reg25;
 	reg [C_S_AXI_DATA_WIDTH-1:0]	slv_reg26;
 	reg [C_S_AXI_DATA_WIDTH-1:0]	slv_reg27;
@@ -704,11 +704,11 @@
 	        5'h11   : reg_data_out <= slv_reg17;
 	        5'h12   : reg_data_out <= slv_reg18;
 	        5'h13   : reg_data_out <= slv_reg19;*/
-	        5'h14   : reg_data_out <= slv_reg20;/*
+	        5'h14   : reg_data_out <= slv_reg20;
 	        5'h15   : reg_data_out <= slv_reg21;
 	        5'h16   : reg_data_out <= slv_reg22;
 	        5'h17   : reg_data_out <= slv_reg23;
-	        5'h18   : reg_data_out <= slv_reg24;
+	        5'h18   : reg_data_out <= slv_reg24;/*
 	        5'h19   : reg_data_out <= slv_reg25;
 	        5'h1A   : reg_data_out <= slv_reg26;
 	        5'h1B   : reg_data_out <= slv_reg27;
@@ -744,11 +744,11 @@
     begin
       if ( S_AXI_ARESETN == 1'b0 )
         begin
-          slv_reg20 <= 32'h0;/*
-          slv_reg21 <= 32'h0;
-          slv_reg22 <= 32'h0;
-          slv_reg23 <= 32'h0;
-          slv_reg24 <= 32'h0;
+          slv_reg20 <= 32'h0;
+          slv_reg21 <= 32'h1;
+          slv_reg22 <= 32'h2;
+          slv_reg23 <= 32'h3;
+          slv_reg24 <= 32'h4;/*
           slv_reg25 <= 32'h0;
           slv_reg26 <= 32'h0;
           slv_reg27 <= 32'h0;
@@ -771,6 +771,7 @@
           slv_reg29 <= SLV_REG29;
           slv_reg30 <= SLV_REG30;*/
           slv_reg31 <= SLV_REG31;
+          slv_reg21 <= slv_reg21 + 1'b1;
         end 
     end
     
