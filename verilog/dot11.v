@@ -263,6 +263,7 @@ wire descramble_out_strobe_vht;
 reg [7:0] byte_count_vht;
 reg [23:0] cloud_vht_siga1;
 reg [23:0] cloud_vht_siga2;
+reg [7:0] sample_count_vht;
 // ht
 reg [15:0] ofdm_in_i_ht;
 reg [15:0] ofdm_in_q_ht;
@@ -836,6 +837,7 @@ always @(posedge clock) begin
                         do_descramble_nl <= 0;
                         num_bits_to_decode_nl <= 96;
                         pkt_rate_nl <= 4'b1011;
+                        sample_count_vht <= 0;
                         
                     end else begin
                         //num_bits_to_decode <= (legacy_len+3)<<4;
@@ -1306,12 +1308,18 @@ always @(posedge clock) begin
 
             S_CLOUD_DECODE: begin
                 ofdm_reset_nl <= 0;
+                sample_count_vht <= sample_count_vht + 1'b1;
                 // vht rotate clockwise by 90 degree
                 ofdm_in_stb_nl <= eq_out_stb_delayed;
                 ofdm_in_i_ht <= eq_out_q_delayed;
                 ofdm_in_q_ht <= ~eq_out_i_delayed+1;
-                ofdm_in_i_vht <= eq_out_i_delayed;
-                ofdm_in_q_vht <= eq_out_q_delayed;
+                if(sample_count_vht < 8'd48) begin
+                    ofdm_in_i_vht <= eq_out_i_delayed;
+                    ofdm_in_q_vht <= eq_out_q_delayed;
+                end else begin
+                    ofdm_in_i_vht <= eq_out_q_delayed;
+                    ofdm_in_q_vht <= ~eq_out_i_delayed+1;
+                end
                 
                 if (byte_out_strobe_vht) begin
                     if (byte_count_vht < 3) begin
