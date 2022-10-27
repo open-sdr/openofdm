@@ -115,7 +115,11 @@ module dot11 (
 
     // for side channel
     output wire [31:0] csi,
-    output wire csi_valid
+    output wire csi_valid,
+    
+    // for cloud 80211ac
+    output reg [47:0] cloud_vht_siga_output,
+    output reg [31:0] cloud_vht_siga_count
 );
 
 `include "common_params.v"
@@ -235,6 +239,61 @@ reg ofdm_enable;
 reg ofdm_in_stb;
 reg [15:0] ofdm_in_i;
 reg [15:0] ofdm_in_q;
+
+
+// 80211ac parallel check format
+localparam S_CLOUD_WAIT = 0;
+localparam S_CLOUD_DECODE = 1;
+localparam S_CLOUD_CHECK = 2;
+// vht
+reg [15:0] ofdm_in_i_vht;
+reg [15:0] ofdm_in_q_vht;
+wire [7:0] byte_out_vht;
+wire byte_out_strobe_vht;
+reg [5:0] demod_out_vht;    // pipe out 
+reg [5:0] demod_soft_bits_vht;
+reg [3:0] demod_soft_bits_pos_vht;
+reg demod_out_strobe_vht;
+reg [7:0] deinterleave_erase_out_vht;
+reg deinterleave_erase_out_strobe_vht;
+reg conv_decoder_out_vht;
+reg conv_decoder_out_stb_vht;
+reg descramble_out_vht;
+reg descramble_out_strobe_vht;
+reg [7:0] byte_count_vht;
+reg [23:0] cloud_vht_siga1;
+reg [23:0] cloud_vht_siga2;
+// ht
+reg [15:0] ofdm_in_i_ht;
+reg [15:0] ofdm_in_q_ht;
+wire [7:0] byte_out_ht;
+wire byte_out_strobe_ht;
+reg [5:0] demod_out_ht;    // pipe out 
+reg [5:0] demod_soft_bits_ht;
+reg [3:0] demod_soft_bits_pos_ht;
+reg demod_out_strobe_ht;
+reg [7:0] deinterleave_erase_out_ht;
+reg deinterleave_erase_out_strobe_ht;
+reg conv_decoder_out_ht;
+reg conv_decoder_out_stb_ht;
+reg descramble_out_ht;
+reg descramble_out_strobe_ht;
+reg [7:0] byte_count_ht;
+reg [23:0] cloud_ht_sig1;
+reg [23:0] cloud_ht_sig2;
+// ht vht common, non legacy
+reg ofdm_reset_nl;
+reg ofdm_enable_nl;
+reg ofdm_in_stb_nl;
+reg soft_decoding_nl_reg;
+wire soft_decoding_nl;
+assign soft_decoding_nl = soft_decoding_nl_reg;
+reg do_descramble_nl;
+reg [31:0] num_bits_to_decode_nl;
+reg [7:0] pkt_rate_nl;
+reg [4:0] state_cloud;
+
+
 
 reg do_descramble;
 reg [31:0] num_bits_to_decode;
@@ -439,6 +498,100 @@ ofdm_decoder ofdm_decoder_inst (
     .descramble_out(descramble_out),
     .descramble_out_strobe(descramble_out_strobe)
 );
+
+
+
+// 80211ac vht ht sig field decoders
+ofdm_decoder ofdm_decoder_vht_sig_inst (
+    .clock(clock),
+    .reset(reset|ofdm_reset_nl),
+    .enable(enable & ofdm_enable_nl),
+
+    .sample_in({ofdm_in_i_vht, ofdm_in_q_vht}),
+    .sample_in_strobe(ofdm_in_stb_nl),
+    .soft_decoding(soft_decoding_nl),
+
+    .do_descramble(do_descramble_nl),
+    .num_bits_to_decode(num_bits_to_decode_nl),
+    .rate(pkt_rate_nl),
+
+    .byte_out(byte_out_vht),
+    .byte_out_strobe(byte_out_strobe_vht),
+
+    .demod_out(demod_out_vht),
+    .demod_soft_bits(demod_soft_bits_vht),
+    .demod_soft_bits_pos(demod_soft_bits_pos_vht),
+    .demod_out_strobe(demod_out_strobe_vht),
+
+    .deinterleave_erase_out(deinterleave_erase_out_vht),
+    .deinterleave_erase_out_strobe(deinterleave_erase_out_strobe_vht),
+
+    .conv_decoder_out(conv_decoder_out_vht),
+    .conv_decoder_out_stb(conv_decoder_out_stb_vht),
+
+    .descramble_out(descramble_out_vht),
+    .descramble_out_strobe(descramble_out_strobe_vht)
+);
+ofdm_decoder ofdm_decoder_ht_sig_inst (
+    .clock(clock),
+    .reset(reset|ofdm_reset_nl),
+    .enable(enable & ofdm_enable_nl),
+
+    .sample_in({ofdm_in_i_ht, ofdm_in_q_ht}),
+    .sample_in_strobe(ofdm_in_stb_nl),
+    .soft_decoding(soft_decoding_nl),
+
+    .do_descramble(do_descramble_nl),
+    .num_bits_to_decode(num_bits_to_decode_nl),
+    .rate(pkt_rate_nl),
+
+    .byte_out(byte_out_ht),
+    .byte_out_strobe(byte_out_strobe_ht),
+
+    .demod_out(demod_out_ht),
+    .demod_soft_bits(demod_soft_bits_ht),
+    .demod_soft_bits_pos(demod_soft_bits_pos_ht),
+    .demod_out_strobe(demod_out_strobe_ht),
+
+    .deinterleave_erase_out(deinterleave_erase_out_ht),
+    .deinterleave_erase_out_strobe(deinterleave_erase_out_strobe_ht),
+
+    .conv_decoder_out(conv_decoder_out_ht),
+    .conv_decoder_out_stb(conv_decoder_out_stb_ht),
+
+    .descramble_out(descramble_out_ht),
+    .descramble_out_strobe(descramble_out_strobe_ht)
+);
+reg crc_in_stb_nl;
+reg crc_in_vht;
+reg crc_in_ht;
+reg [7:0] crc_count_nl;
+reg crc_reset_nl;
+wire [7:0] crc_out_vht;
+wire [7:0] crc_out_ht;
+wire [7:0] crc_vht = cloud_vht_siga2[17:10];
+wire [7:0] crc_ht = cloud_ht_sig2[17:10];
+ht_sig_crc crc_inst_vht (
+    .clock(clock),
+    .enable(enable),
+    .reset(reset | crc_reset_nl),
+
+    .bit(crc_in_vht),
+    .input_strobe(crc_in_stb_nl),
+    .crc(crc_out_vht)
+);
+ht_sig_crc crc_inst_ht (
+    .clock(clock),
+    .enable(enable),
+    .reset(reset | crc_reset_nl),
+
+    .bit(crc_in_ht),
+    .input_strobe(crc_in_stb_nl),
+    .crc(crc_out_ht)
+);
+
+
+
 
 ht_sig_crc crc_inst (
     .clock(clock),
@@ -671,6 +824,13 @@ always @(posedge clock) begin
                         rot_eq_count <= 0;
                         normal_eq_count <= 0;
                         state <= S_DETECT_HT;
+                        
+                        //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                        state_cloud <= S_CLOUD_DECODE;
+                        do_descramble_nl <= 0;
+                        num_bits_to_decode_nl <= 96;
+                        pkt_rate_nl <= 4'b1011;
+                        
                     end else begin
                         //num_bits_to_decode <= (legacy_len+3)<<4;
                         do_descramble <= 1;
@@ -1080,5 +1240,108 @@ always @(posedge clock) begin
         endcase
     end
 end
+
+// cloud parallel formate check
+always @(posedge clock) begin
+    if (reset) begin
+        state_cloud <= S_CLOUD_WAIT;
+        do_descramble_nl <= 0;
+        num_bits_to_decode_nl <= 0;
+        pkt_rate_nl <= 0;
+
+        ofdm_reset_nl <= 0;
+        ofdm_enable_nl <= 0;
+        ofdm_in_stb_nl <= 0;
+        ofdm_in_i_vht <= 0;
+        ofdm_in_q_vht <= 0;
+        ofdm_in_i_ht <= 0;
+        ofdm_in_q_ht <= 0;
+        
+        cloud_vht_siga_count <= 0;
+        cloud_vht_siga_output <= 0;
+
+    end else if (enable) begin
+        ofdm_enable_nl <= 1;
+        case(state_cloud)
+            S_CLOUD_WAIT: begin
+                ofdm_reset_nl <= 1;
+                byte_count_ht <= 0;
+                byte_count_vht <= 0;
+            end
+
+            S_CLOUD_DECODE: begin
+                ofdm_reset_nl <= 0;
+                // vht rotate clockwise by 90 degree
+                ofdm_in_stb_nl <= eq_out_stb_delayed;
+                ofdm_in_i_ht <= eq_out_q_delayed;
+                ofdm_in_q_ht <= ~eq_out_i_delayed+1;
+                ofdm_in_i_vht <= eq_out_i_delayed;
+                ofdm_in_q_vht <= eq_out_q_delayed;
+                
+                if (byte_out_strobe_vht) begin
+                    if (byte_count_vht < 3) begin
+                        cloud_vht_siga1 <= {byte_out_vht, cloud_vht_siga1[23:8]};
+                    end else if (byte_count_vht < 6) begin
+                        cloud_vht_siga2 <= {byte_out_vht, cloud_vht_siga2[23:8]};
+                    end else begin
+                    end
+                    byte_count_vht <= byte_count_vht + 1;
+                end
+                
+                if (byte_out_strobe_ht) begin
+                    if (byte_count_ht < 3) begin
+                        cloud_ht_sig1 <= {byte_out_ht, cloud_ht_sig1[23:8]};
+                    end else if (byte_count_ht < 6) begin
+                        cloud_ht_sig2 <= {byte_out_ht, cloud_ht_sig2[23:8]};
+                    end else begin
+                    end
+                    byte_count_ht <= byte_count_ht + 1;
+                end
+                
+                if(byte_count_vht >= 6) begin
+                    if(byte_count_ht >= 6) begin
+                        state_cloud <= S_CLOUD_CHECK;
+                    end
+                end
+                
+            end
+
+            S_CLOUD_CHECK: begin
+                ofdm_reset_nl <= 1;
+                crc_reset_nl <= 0;
+                crc_count_nl <= crc_count_nl + 1;
+
+                if (crc_count_nl < 24) begin
+                    crc_in_stb_nl <= 1;
+                    crc_in_vht <= cloud_vht_siga1[crc_count_nl];
+                    crc_in_ht <= cloud_ht_sig1[crc_count_nl];
+                end else if (crc_count_nl < 34) begin
+                    crc_in_stb_nl <= 1;
+                    crc_in_vht <= cloud_vht_siga2[crc_count_nl-24];
+                    crc_in_ht <= cloud_ht_sig2[crc_count_nl-24];
+                end else if (crc_count_nl == 34) begin
+                    crc_in_stb_nl <= 0;
+                end else if (crc_count_nl == 35) begin
+                    if (crc_out_vht ^ crc_vht) begin
+                        state_cloud <= S_CLOUD_WAIT;
+                        cloud_vht_siga_count <= cloud_vht_siga_count + 1'b1;
+                        cloud_vht_siga_output <= {cloud_vht_siga1, cloud_vht_siga2};
+                    end else if (crc_out_ht ^ crc_ht) begin
+                        state_cloud <= S_CLOUD_WAIT;
+                    end else begin
+                        state_cloud <= S_CLOUD_WAIT;
+                    end
+                end
+            end
+
+            default: begin
+                state_cloud <= S_CLOUD_WAIT;
+            end
+        endcase
+    end
+end
+
+
+
 
 endmodule

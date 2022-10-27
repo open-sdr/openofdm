@@ -95,10 +95,10 @@
     wire [(C_S00_AXI_DATA_WIDTH-1):0] slv_reg19; */
     wire [(C_S00_AXI_DATA_WIDTH-1):0] slv_reg20; // read openofdm rx core internal state
     /*
-    wire [(C_S00_AXI_DATA_WIDTH-1):0] slv_reg21; 
+    wire [(C_S00_AXI_DATA_WIDTH-1):0] slv_reg21; */
     wire [(C_S00_AXI_DATA_WIDTH-1):0] slv_reg22; 
     wire [(C_S00_AXI_DATA_WIDTH-1):0] slv_reg23; 
-    wire [(C_S00_AXI_DATA_WIDTH-1):0] slv_reg24; 
+    wire [(C_S00_AXI_DATA_WIDTH-1):0] slv_reg24; /*
     wire [(C_S00_AXI_DATA_WIDTH-1):0] slv_reg25; 
     wire [(C_S00_AXI_DATA_WIDTH-1):0] slv_reg26; 
     wire [(C_S00_AXI_DATA_WIDTH-1):0] slv_reg27; 
@@ -112,6 +112,11 @@
 
 	wire sig_valid = (pkt_header_valid_strobe&pkt_header_valid);
 	wire receiver_rst;
+	
+	// cloud 80211ac
+	wire [47:0] cloud_vht_siga;
+	assign slv_reg23 = cloud_vht_siga[31:0];
+	assign slv_reg24 = {16'b0, cloud_vht_siga[47:32]};
 
 	signal_watchdog signal_watchdog_inst (
 		.clk(s00_axi_aclk),
@@ -237,7 +242,11 @@
 
 		// for side channel
 		.csi(csi),
-		.csi_valid(csi_valid)
+		.csi_valid(csi_valid),
+		
+		// for cloud 80211ac
+		.cloud_vht_siga_output(cloud_vht_siga),
+		.cloud_vht_siga_count(slv_reg22)
 	);
 
 	openofdm_rx_s_axi # ( 
@@ -287,10 +296,10 @@
         .SLV_REG18(slv_reg18),
         .SLV_REG19(slv_reg19),*/
         .SLV_REG20(slv_reg20),/*
-        .SLV_REG21(slv_reg21),
+        .SLV_REG21(slv_reg21),*/
         .SLV_REG22(slv_reg22),
         .SLV_REG23(slv_reg23),
-		.SLV_REG24(slv_reg24),
+		.SLV_REG24(slv_reg24),/*
         .SLV_REG25(slv_reg25),
         .SLV_REG26(slv_reg26),
         .SLV_REG27(slv_reg27),

@@ -38,10 +38,10 @@
         output wire [C_S_AXI_DATA_WIDTH-1:0] SLV_REG18,
         output wire [C_S_AXI_DATA_WIDTH-1:0] SLV_REG19,*/
         input  wire [C_S_AXI_DATA_WIDTH-1:0] SLV_REG20,/*
-        input  wire [C_S_AXI_DATA_WIDTH-1:0] SLV_REG21,
+        input  wire [C_S_AXI_DATA_WIDTH-1:0] SLV_REG21,*/
         input  wire [C_S_AXI_DATA_WIDTH-1:0] SLV_REG22,
         input  wire [C_S_AXI_DATA_WIDTH-1:0] SLV_REG23,
-        input  wire [C_S_AXI_DATA_WIDTH-1:0] SLV_REG24,
+        input  wire [C_S_AXI_DATA_WIDTH-1:0] SLV_REG24,/*
         input  wire [C_S_AXI_DATA_WIDTH-1:0] SLV_REG25,
         input  wire [C_S_AXI_DATA_WIDTH-1:0] SLV_REG26,
         input  wire [C_S_AXI_DATA_WIDTH-1:0] SLV_REG27,
@@ -760,10 +760,10 @@
       else
         begin    
           slv_reg20 <= SLV_REG20;/*
-          slv_reg21 <= SLV_REG21;
+          slv_reg21 <= SLV_REG21;*/
           slv_reg22 <= SLV_REG22;
           slv_reg23 <= SLV_REG23;
-          slv_reg24 <= SLV_REG24;
+          slv_reg24 <= SLV_REG24;/*
           slv_reg25 <= SLV_REG25;
           slv_reg26 <= SLV_REG26;
           slv_reg27 <= SLV_REG27;
@@ -771,7 +771,7 @@
           slv_reg29 <= SLV_REG29;
           slv_reg30 <= SLV_REG30;*/
           slv_reg31 <= SLV_REG31;
-          slv_reg21 <= slv_reg21 + 1'b1;
+          slv_reg21 <= ((slv_reg21 + 1'b1) & 32'h0000ffff) + 32'h00100000;
         end 
     end
     
