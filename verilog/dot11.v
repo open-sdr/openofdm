@@ -250,16 +250,16 @@ reg [15:0] ofdm_in_i_vht;
 reg [15:0] ofdm_in_q_vht;
 wire [7:0] byte_out_vht;
 wire byte_out_strobe_vht;
-reg [5:0] demod_out_vht;    // pipe out 
-reg [5:0] demod_soft_bits_vht;
-reg [3:0] demod_soft_bits_pos_vht;
-reg demod_out_strobe_vht;
-reg [7:0] deinterleave_erase_out_vht;
-reg deinterleave_erase_out_strobe_vht;
-reg conv_decoder_out_vht;
-reg conv_decoder_out_stb_vht;
-reg descramble_out_vht;
-reg descramble_out_strobe_vht;
+wire [5:0] demod_out_vht;    // pipe out 
+wire [5:0] demod_soft_bits_vht;
+wire [3:0] demod_soft_bits_pos_vht;
+wire demod_out_strobe_vht;
+wire [7:0] deinterleave_erase_out_vht;
+wire deinterleave_erase_out_strobe_vht;
+wire conv_decoder_out_vht;
+wire conv_decoder_out_stb_vht;
+wire descramble_out_vht;
+wire descramble_out_strobe_vht;
 reg [7:0] byte_count_vht;
 reg [23:0] cloud_vht_siga1;
 reg [23:0] cloud_vht_siga2;
@@ -268,16 +268,16 @@ reg [15:0] ofdm_in_i_ht;
 reg [15:0] ofdm_in_q_ht;
 wire [7:0] byte_out_ht;
 wire byte_out_strobe_ht;
-reg [5:0] demod_out_ht;    // pipe out 
-reg [5:0] demod_soft_bits_ht;
-reg [3:0] demod_soft_bits_pos_ht;
-reg demod_out_strobe_ht;
-reg [7:0] deinterleave_erase_out_ht;
-reg deinterleave_erase_out_strobe_ht;
-reg conv_decoder_out_ht;
-reg conv_decoder_out_stb_ht;
-reg descramble_out_ht;
-reg descramble_out_strobe_ht;
+wire [5:0] demod_out_ht;    // pipe out 
+wire [5:0] demod_soft_bits_ht;
+wire [3:0] demod_soft_bits_pos_ht;
+wire demod_out_strobe_ht;
+wire [7:0] deinterleave_erase_out_ht;
+wire deinterleave_erase_out_strobe_ht;
+wire conv_decoder_out_ht;
+wire conv_decoder_out_stb_ht;
+wire descramble_out_ht;
+wire descramble_out_strobe_ht;
 reg [7:0] byte_count_ht;
 reg [23:0] cloud_ht_sig1;
 reg [23:0] cloud_ht_sig2;
@@ -292,7 +292,13 @@ reg do_descramble_nl;
 reg [31:0] num_bits_to_decode_nl;
 reg [7:0] pkt_rate_nl;
 reg [4:0] state_cloud;
-
+// useless
+reg [5:0] demod_out_nl;    // pipe out 
+reg [5:0] demod_soft_bits_nl;
+reg [3:0] demod_soft_bits_pos_nl;
+reg [7:0] deinterleave_erase_out_nl;
+reg conv_decoder_out_nl;
+reg descramble_out_nl;
 
 
 reg do_descramble;
@@ -1262,6 +1268,35 @@ always @(posedge clock) begin
 
     end else if (enable) begin
         ofdm_enable_nl <= 1;
+        
+        if(demod_out_strobe_vht & demod_out_strobe_ht) begin
+            demod_out_nl = demod_out_vht;
+            demod_soft_bits_nl = demod_soft_bits_vht;
+            demod_soft_bits_pos_nl = demod_soft_bits_pos_vht;
+        end else begin
+            demod_out_nl = demod_out_ht;
+            demod_soft_bits_nl = demod_soft_bits_ht;
+            demod_soft_bits_pos_nl = demod_soft_bits_pos_ht;
+        end
+        
+        if(deinterleave_erase_out_strobe_vht & deinterleave_erase_out_strobe_ht) begin
+            deinterleave_erase_out_nl = deinterleave_erase_out_vht;
+        end else begin
+            deinterleave_erase_out_nl = deinterleave_erase_out_ht;
+        end
+        
+        if(conv_decoder_out_stb_vht & conv_decoder_out_stb_ht) begin
+            conv_decoder_out_nl = conv_decoder_out_vht;
+        end else begin
+            conv_decoder_out_nl = conv_decoder_out_ht;
+        end
+        
+        if(descramble_out_strobe_vht & descramble_out_strobe_ht) begin
+            descramble_out_nl = descramble_out_vht;
+        end else begin
+            descramble_out_nl = descramble_out_ht;
+        end
+        
         case(state_cloud)
             S_CLOUD_WAIT: begin
                 ofdm_reset_nl <= 1;
