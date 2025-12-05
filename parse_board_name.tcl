@@ -16,6 +16,12 @@ if {$BOARD_NAME=="zed_fmcs2"} {
    set board_part_string "xilinx.com:zcu102:part0:3.4"
    set board_id_string "zcu102"
    set fpga_size_flag 1
+} elseif {$BOARD_NAME=="zcu102_adrv9002"} {
+   set ultra_scale_flag 1
+   set part_string "xczu9eg-ffvb1156-2-e"
+   set board_part_string "xilinx.com:zcu102:part0:3.4"
+   set board_id_string "zcu102"
+   set fpga_size_flag 1
 } elseif {$BOARD_NAME=="zc706_fmcs2"} {
    set ultra_scale_flag 0
    set part_string "xc7z045ffg900-2"
