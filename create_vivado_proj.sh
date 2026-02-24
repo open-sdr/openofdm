@@ -24,6 +24,8 @@ fi
 XILINX_DIR=$1
 TCL_FILENAME=$2
 
+TCL_FILENAME_CORE="${TCL_FILENAME%.tcl}"
+
 echo XILINX_DIR $XILINX_DIR
 echo TCL_FILENAME $TCL_FILENAME
 
@@ -74,6 +76,11 @@ if [[ -n $9 ]]; then
 fi
 
 set -x
+if [ "$TCL_FILENAME_CORE" = "openofdm_rx" ]; then
+  rm ./verilog/$TCL_FILENAME_CORE"_pre_def.v"
+else
+  rm ./src/$TCL_FILENAME_CORE"_pre_def.v"
+fi
 vivado -source $TCL_FILENAME -tclargs $ARG1 $ARG2 $ARG3 $ARG4 $ARG5 $ARG6 $ARG7
 set +x
 
