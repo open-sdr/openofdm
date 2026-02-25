@@ -231,7 +231,8 @@ wire fft_done;
 wire fft_busy;
 wire fft_valid;
 
-wire [31:0] fft_out = {fft_out_re[22:7], fft_out_im[22:7]};
+//wire [31:0] fft_out = {fft_out_re[22:7], fft_out_im[22:7]};
+wire [31:0] fft_out = {fft_out_re[20:5], fft_out_im[20:5]}; //Make the FFT output more sensitive. 2shift works equivalemnt to 4bbgain in rxintf.v, AO
 
 wire signed [15:0] raw_i;
 wire signed [15:0] raw_q;
