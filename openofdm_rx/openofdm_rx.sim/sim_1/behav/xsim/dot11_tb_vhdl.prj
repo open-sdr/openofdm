@@ -1,0 +1,9 @@
+# compile vhdl design source files
+vhdl xil_defaultlib  \
+"../../../../../ip_repo/viterbi/sim/viterbi_v7_0.vhd" \
+"../../../../../ip_repo/div_gen_new/src/div_gen_div_gen_0_0/sim/div_gen_div_gen_0_0.vhd" \
+"../../../../../ip_repo/complex_multiplier/sim/complex_multiplier.vhd" \
+"../../../../../ip_repo/xfft/sim/xfft_v9.vhd" \
+
+# Do not sort compile order
+nosort

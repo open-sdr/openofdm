@@ -1,0 +1,12 @@
+
+{ 
+    crc :  15065257948293587172  , 
+    ccp_crc :  0  , 
+    cmdline : " --incr --debug typical --relax --mt 20 -L xil_defaultlib -L xbip_utils_v3_0_13 -L c_reg_fd_v12_0_9 -L xbip_dsp48_wrapper_v3_0_6 -L xbip_pipe_v3_0_9 -L xbip_dsp48_addsub_v3_0_9 -L xbip_addsub_v3_0_9 -L c_addsub_v12_0_18 -L c_gate_bit_v12_0_9 -L c_compare_v12_0_9 -L xbip_counter_v3_0_9 -L c_counter_binary_v12_0_19 -L c_mux_bit_v12_0_9 -L c_mux_bus_v12_0_9 -L c_shift_ram_v12_0_17 -L axi_utils_v2_0_9 -L viterbi_v9_1_17 -L blk_mem_gen_v8_4_8 -L xlslice_v1_0_4 -L xbip_bram18k_v3_0_9 -L mult_gen_v12_0_21 -L floating_point_v7_0_23 -L xbip_dsp48_mult_v3_0_9 -L xbip_dsp48_multadd_v3_0_9 -L div_gen_v5_1_22 -L cmpy_v6_0_24 -L xfft_v9_1_12 -L unisims_ver -L unimacro_ver -L secureip -L xpm --snapshot dot11_tb_behav xil_defaultlib.dot11_tb xil_defaultlib.glbl" , 
+    buildDate : "May 22 2024" , 
+    buildTime : "19:03:11" , 
+    linkCmd : "C:\\Xilinx\\Vivado\\2024.1\\data\\..\\tps\\mingw\\6.2.0\\win64.o\\nt\\bin\\gcc.exe -Wa,-W  -O -Wl,--stack,104857600 -o \"xsim.dir/dot11_tb_behav/xsimk.exe\"   \"xsim.dir/dot11_tb_behav/obj/xsim_0.win64.obj\" \"xsim.dir/dot11_tb_behav/obj/xsim_1.win64.obj\" \"xsim.dir/dot11_tb_behav/obj/xsim_2.win64.obj\" \"xsim.dir/dot11_tb_behav/obj/xsim_3.win64.obj\" \"xsim.dir/dot11_tb_behav/obj/xsim_4.win64.obj\" \"xsim.dir/dot11_tb_behav/obj/xsim_5.win64.obj\" \"xsim.dir/dot11_tb_behav/obj/xsim_6.win64.obj\" \"xsim.dir/dot11_tb_behav/obj/xsim_7.win64.obj\" \"xsim.dir/dot11_tb_behav/obj/xsim_8.win64.obj\" \"xsim.dir/dot11_tb_behav/obj/xsim_9.win64.obj\" \"xsim.dir/dot11_tb_behav/obj/xsim_10.win64.obj\" \"xsim.dir/dot11_tb_behav/obj/xsim_11.win64.obj\" \"xsim.dir/dot11_tb_behav/obj/xsim_12.win64.obj\" \"xsim.dir/dot11_tb_behav/obj/xsim_13.win64.obj\" \"xsim.dir/dot11_tb_behav/obj/xsim_14.win64.obj\" \"xsim.dir/dot11_tb_behav/obj/xsim_15.win64.obj\" \"xsim.dir/dot11_tb_behav/obj/xsim_16.win64.obj\" \"xsim.dir/dot11_tb_behav/obj/xsim_17.win64.obj\" \"xsim.dir/dot11_tb_behav/obj/xsim_18.win64.obj\" \"xsim.dir/dot11_tb_behav/obj/xsim_19.win64.obj\" \"xsim.dir/dot11_tb_behav/obj/xsim_20.win64.obj\" \"xsim.dir/dot11_tb_behav/obj/xsim_21.win64.obj\" \"xsim.dir/dot11_tb_behav/obj/xsim_22.win64.obj\" \"xsim.dir/dot11_tb_behav/obj/xsim_23.win64.obj\" -L\"C:\\Xilinx\\Vivado\\2024.1\\lib\\win64.o\" -lrdi_simulator_kernel   -lrdi_simbridge_kernel" , 
+    aggregate_nets : 
+    [ 
+    ] 
+} 

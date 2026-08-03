@@ -1,0 +1,25 @@
+#-----------------------------------------------------------
+# Vivado v2024.1 (64-bit)
+# SW Build 5076996 on Wed May 22 18:37:14 MDT 2024
+# IP Build 5075265 on Wed May 22 21:45:21 MDT 2024
+# SharedData Build 5076995 on Wed May 22 18:29:18 MDT 2024
+# Start of session at: Mon Aug  5 03:50:59 2024
+# Process ID: 9700
+# Current directory: D:/Data/RASentinel/owifi/owifi.srcs/sources_1/openwifi/rot_lut
+# Command line: vivado.exe -gui_launcher_event rodinguilauncherevent21316 D:\Data\RASentinel\owifi\owifi.srcs\sources_1\openwifi\rot_lut\rot_lut.dcp
+# Log file: D:/Data/RASentinel/owifi/owifi.srcs/sources_1/openwifi/rot_lut/vivado.log
+# Journal file: D:/Data/RASentinel/owifi/owifi.srcs/sources_1/openwifi/rot_lut\vivado.jou
+# Running On        :PC1008
+# Platform          :Windows Server 2016 or Windows 10
+# Operating System  :19045
+# Processor Detail  :AMD Ryzen 9 5900X 12-Core Processor            
+# CPU Frequency     :4750 MHz
+# CPU Physical cores:12
+# CPU Logical cores :24
+# Host memory       :34280 MB
+# Swap memory       :5100 MB
+# Total Virtual     :39380 MB
+# Available Virtual :12672 MB
+#-----------------------------------------------------------
+start_gui
+open_checkpoint D:/Data/RASentinel/owifi/owifi.srcs/sources_1/openwifi/rot_lut/rot_lut.dcp

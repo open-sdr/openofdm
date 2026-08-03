@@ -1,7 +1,15 @@
-OpenOFDM
-========
+OpenOFDM - Fork for RA-Sentinel
+===============================
 
-This project contains a Verilog implementation of 802.11 OFDM PHY decoder.
+This project contains a Verilog implementation of 802.11 OFDM PHY decoder
+based on the source code of the original openOFDM by Jinghao Shi.
+https://github.com/open-sdr/openofdm. The modification in this fork
+have the following intentions:
+
+ - Increase code readability
+ - Add phase deviation output (deviation between or mastertlock and the signal received over the air)
+ - Replace the proprietary end most importantly the limited evaluation IPs with oprn source alternatives.
+
 Features are:
 
  - Fully synthesizable (tested on Ettus Research USRP N210 platform)
@@ -9,23 +17,21 @@ Features are:
  - Support 802.11n for MCS 0 - 7 @ 20 MHz bandwidth
  - Cross validation with included Python decoder 
  - Modular design for easy modification and extension
+ - Replacement of the proprietary Viterbi decoder by an open variant
 
-See full documentation at http://openofdm.readthedocs.io.
+See full documentation of the original openOFDM at http://openofdm.readthedocs.io.
 
 Environment Setup
 -----------------
 
-This project has the following dependencies:
-
- - `Icarus Verilog <http://iverilog.icarus.com/>`_: for compiling Verilog files and simulation.
- - `GtkWave <http://iverilog.icarus.com/>`_: for wave form visualization.
+The code of this fork is meant to be run and synthetisied in AMD Vivado 2024.1
 
 
 Input and Output
 ----------------
 
-In a nutshell, the top level ``dot11`` Verilog module takes 32-bit I/Q samples
-(16-bit each) as input, and output decoded bytes in 802.11 packet. The sampling
+In a nutshell, the top level ``dot11`` Verilog module takes 2x 12-bit I/Q samples
+as input, and output decoded bytes in 802.11 packet. The sampling
 rate is 20 MSPS and the clock rate is 100 MHz. This means this module expects
 one pair of I/Q sample every 5 clock ticks.
 
@@ -38,26 +44,8 @@ License
 FAQs
 ----
 
-**Q: Is there any need to change host driver UHD to incorporate new changes in
-FPGA?**
+**Q: Why this form from original openOFD?**
 
-A: No. In fact OpenOFDM relies on the current UHD-USRP communication mechanism.
-However, since the logic of the FPGA is changed in OpenOFDM, its behavior is
-also different. For instance, utilities such as ``rx_samples_to_file`` do not
-work as expected since the FPGA in OpenOFDM does not dumping RF signals back to
-host.
-
-**Q: Any example code to communicate with OFDM core in FPGA from host?**
-
-A: OpenOFDM FPGA module is configurable via USRP user setting registers
-(``set_user_reg`` function). The
-register address definition is in `common_params.v
-<https://github.com/jhshi/openofdm/blob/master/verilog/common_params.v>`_. The
-whole OpenOFM FPGA module takes 32 bit I/Q samples and outputs decoded bytes. It
-is supposed to be placed in the receive chain of the USRP (e.g.,
-``custom_dsp_rx.v``.
-
-
-**Q: Is there any change in ZPU firmware?**
-
-A: No.
+A: Becuase openOFDM is used for other means than really transporting data over the air,
+I need to make some modifications and comments to the code which are focussed on forensic
+aspects and not needed|wanted in the original openOFDM project.

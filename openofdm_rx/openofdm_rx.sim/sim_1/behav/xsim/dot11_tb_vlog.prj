@@ -1,0 +1,41 @@
+# compile verilog/system verilog design source files
+verilog xil_defaultlib  \
+"../../../../../ip_repo/deinter_lut/sim/deinter_lut.v" \
+"../../../../../ip_repo/div_gen_new/src/div_gen_xlslice_0_0/sim/div_gen_xlslice_0_0.v" \
+"../../../../../ip_repo/atan_lut/sim/atan_lut.v" \
+"../../../../../ip_repo/rot_lut/sim/rot_lut.v" \
+"../../../../../verilog/bits_to_bytes.v" \
+"../../../../../verilog/calc_mean.v" \
+"../../../../../verilog/complex_mult.v" \
+"../../../../../verilog/complex_to_mag.v" \
+"../../../../../verilog/complex_to_mag_sq.v" \
+"../../../../../verilog/crc32.v" \
+"../../../../../verilog/deinterleave.v" \
+"../../../../../verilog/delayT.v" \
+"../../../../../verilog/demodulate.v" \
+"../../../../../verilog/descramble.v" \
+"../../../../../ip_repo/div_gen_new/src/div_gen.v" \
+"../../../../../verilog/divider.v" \
+"../../../../../verilog/dot11.v" \
+"../../../../../verilog/equalizer.v" \
+"../../../../../verilog/fifo_sample_delay.v" \
+"../../../../../verilog/ht_sig_crc.v" \
+"../../../../../verilog/mv_avg.v" \
+"../../../../../verilog/mv_avg_dual_ch.v" \
+"../../../../../verilog/ofdm_decoder.v" \
+"../../../../../verilog/phase.v" \
+"../../../../../verilog/phy_len_calculation.v" \
+"../../../../../verilog/usrp2/ram_2port.v" \
+"../../../../../verilog/rotate.v" \
+"../../../../../verilog/running_sum_dual_ch.v" \
+"../../../../../verilog/signal_watchdog.v" \
+"../../../../../verilog/stage_mult.v" \
+"../../../../../verilog/sync_long.v" \
+"../../../../../verilog/sync_short.v" \
+"../../../../../verilog/dot11_tb.v" \
+
+# compile glbl module
+verilog xil_defaultlib "glbl.v"
+
+# Do not sort compile order
+nosort

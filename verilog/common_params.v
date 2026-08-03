@@ -11,15 +11,17 @@ localparam PI_3_4 =         PI_2 + PI_4;
 
 
 //////////////////////////////////////////////////////////////////////////
-// USER REG DEFINITION
+// USER CONFIG REG DEFINITION, CR = Config Register
 //////////////////////////////////////////////////////////////////////////
+localparam SPI_REG_REGISTER_WIDTH =         32;
+localparam SPI_REG_ADDRESS_WIDTH =          7;
 // power trigger
-localparam SR_POWER_THRES   =               3;
-localparam SR_POWER_WINDOW =                4;
-localparam SR_SKIP_SAMPLE =                 5;
+localparam CR_POWER_THRES   =               3;
+localparam CR_POWER_WINDOW =                4;
+localparam CR_SKIP_SAMPLE =                 5;
 
 // sync short
-localparam SR_MIN_PLATEAU =                 6;
+localparam CR_MIN_PLATEAU =                 6;
 
 //////////////////////////////////////////////////////////////////////////
 // DOT11 STATE MACHINE
@@ -34,11 +36,13 @@ localparam S_HT_SIGNAL =            6;
 localparam S_CHECK_HT_SIG_CRC =     7;
 localparam S_CHECK_HT_SIG =         8;
 localparam S_HT_STS =               9;
-localparam S_HT_LTS =               10;
-localparam S_DECODE_DATA =          11;
-localparam S_SIGNAL_ERROR =         12;
-localparam S_HT_SIG_ERROR =         13;
-localparam S_DECODE_DONE =          14;
+localparam S_HT_LTS =               10; // A
+localparam S_MPDU_DELIM =           11; // B
+localparam S_DECODE_DATA =          12; // C
+localparam S_MPDU_PAD =             13; // D
+localparam S_SIGNAL_ERROR =         14; // E
+localparam S_HT_SIG_ERROR =         16; // F
+localparam S_DECODE_DONE =          15; // 10
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -54,18 +58,21 @@ localparam E_WRONG_RSVD =           3;
 localparam E_WRONG_TAIL =           4;
 
 // erros in HT-SIGNAL
-localparam E_UNSUPPORTED_MCS =      1;
-localparam E_UNSUPPORTED_CBW =      2;
-localparam E_HT_WRONG_RSVD =        3;
-localparam E_UNSUPPORTED_STBC =     4;
-localparam E_UNSUPPORTED_FEC =      5;
-localparam E_UNSUPPORTED_SGI =      6;
-localparam E_UNSUPPORTED_SPATIAL =  7;
-localparam E_HT_WRONG_TAIL =        8;
-localparam E_WRONG_CRC =            9;
+localparam E_UNSUPPORTED_MCS =      8;
+localparam E_UNSUPPORTED_CBW =      9;
+localparam E_HT_WRONG_RSVD =        10;
+localparam E_UNSUPPORTED_STBC =     11;
+localparam E_UNSUPPORTED_FEC =      12;
+localparam E_UNSUPPORTED_SGI =      13;
+localparam E_UNSUPPORTED_SPATIAL =  14;
+localparam E_HT_WRONG_TAIL =        15;
+localparam E_HT_AMPDU_WARN =        16;
+localparam E_HT_AMPDU_ERROR =       17;
+localparam E_WRONG_CRC =            18;
 
 // fcs error
-localparam E_WRONG_FCS =            1;
+localparam E_WRONG_FCS =            31;
 
 
 localparam EXPECTED_FCS = 32'hc704dd7b;
+

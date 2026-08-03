@@ -1,0 +1,66 @@
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Data/RASentinel/owifi/openwifi-hw/ip/openofdm_rx/ip_repo/deinter_lut/sim/deinter_lut.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module deinter_lut
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Data/RASentinel/owifi/openwifi-hw/ip/openofdm_rx/ip_repo/div_gen_new/src/div_gen_xlslice_0_0/sim/div_gen_xlslice_0_0.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module div_gen_xlslice_0_0
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Data/RASentinel/owifi/openwifi-hw/ip/openofdm_rx/ip_repo/atan_lut/sim/atan_lut.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module atan_lut
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Data/RASentinel/owifi/openwifi-hw/ip/openofdm_rx/ip_repo/rot_lut/sim/rot_lut.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module rot_lut
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Data/RASentinel/owifi/openwifi-hw/ip/openofdm_rx/verilog/bits_to_bytes.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module bits_to_bytes
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Data/RASentinel/owifi/openwifi-hw/ip/openofdm_rx/verilog/calc_mean.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module calc_mean
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Data/RASentinel/owifi/openwifi-hw/ip/openofdm_rx/verilog/complex_mult.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module complex_mult
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Data/RASentinel/owifi/openwifi-hw/ip/openofdm_rx/verilog/complex_to_mag.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module complex_to_mag
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Data/RASentinel/owifi/openwifi-hw/ip/openofdm_rx/verilog/complex_to_mag_sq.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module complex_to_mag_sq
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Data/RASentinel/owifi/openwifi-hw/ip/openofdm_rx/verilog/crc32.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module crc32
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Data/RASentinel/owifi/openwifi-hw/ip/openofdm_rx/verilog/deinterleave.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module deinterleave
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Data/RASentinel/owifi/openwifi-hw/ip/openofdm_rx/verilog/delayT.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module delayT
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Data/RASentinel/owifi/openwifi-hw/ip/openofdm_rx/verilog/demodulate.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module demodulate
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Data/RASentinel/owifi/openwifi-hw/ip/openofdm_rx/verilog/descramble.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module descramble
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Data/RASentinel/owifi/openwifi-hw/ip/openofdm_rx/ip_repo/div_gen_new/src/div_gen.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module div_gen
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Data/RASentinel/owifi/openwifi-hw/ip/openofdm_rx/verilog/divider.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module divider
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Data/RASentinel/owifi/openwifi-hw/ip/openofdm_rx/verilog/dot11.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module dot11
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Data/RASentinel/owifi/openwifi-hw/ip/openofdm_rx/verilog/equalizer.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module equalizer
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Data/RASentinel/owifi/openwifi-hw/ip/openofdm_rx/verilog/fifo_sample_delay.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module fifo_sample_delay
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Data/RASentinel/owifi/openwifi-hw/ip/openofdm_rx/verilog/ht_sig_crc.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module ht_sig_crc
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Data/RASentinel/owifi/openwifi-hw/ip/openofdm_rx/verilog/mv_avg.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module mv_avg
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Data/RASentinel/owifi/openwifi-hw/ip/openofdm_rx/verilog/mv_avg_dual_ch.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module mv_avg_dual_ch
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Data/RASentinel/owifi/openwifi-hw/ip/openofdm_rx/verilog/ofdm_decoder.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module ofdm_decoder
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Data/RASentinel/owifi/openwifi-hw/ip/openofdm_rx/verilog/phase.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module phase
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Data/RASentinel/owifi/openwifi-hw/ip/openofdm_rx/verilog/phy_len_calculation.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module phy_len_calculation
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Data/RASentinel/owifi/openwifi-hw/ip/openofdm_rx/verilog/usrp2/ram_2port.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module ram_2port
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Data/RASentinel/owifi/openwifi-hw/ip/openofdm_rx/verilog/rotate.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module rotate
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Data/RASentinel/owifi/openwifi-hw/ip/openofdm_rx/verilog/running_sum_dual_ch.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module running_sum_dual_ch
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Data/RASentinel/owifi/openwifi-hw/ip/openofdm_rx/verilog/signal_watchdog.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module signal_watchdog
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Data/RASentinel/owifi/openwifi-hw/ip/openofdm_rx/verilog/stage_mult.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module stage_mult
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Data/RASentinel/owifi/openwifi-hw/ip/openofdm_rx/verilog/sync_long.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module sync_long
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Data/RASentinel/owifi/openwifi-hw/ip/openofdm_rx/verilog/sync_short.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module sync_short
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Data/RASentinel/owifi/openwifi-hw/ip/openofdm_rx/verilog/dot11_tb.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module dot11_tb
