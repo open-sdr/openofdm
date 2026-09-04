@@ -1,6 +1,7 @@
 // Xianjun jiao. putaoshu@msn.com; xianjun.jiao@imec.be;
 `timescale 1 ns / 1 ps
 
+`include "global_config.v"
 `include "openofdm_rx_pre_def.v"
 `include "openofdm_rx_git_rev.v"
 
