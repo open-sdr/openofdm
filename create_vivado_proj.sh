@@ -24,15 +24,14 @@ fi
 XILINX_DIR=$1
 TCL_FILENAME=$2
 
-TCL_FILENAME_CORE="${TCL_FILENAME%.tcl}"
+echo "XILINX_DIR $XILINX_DIR"
+echo "VIVADO_DIR ${VIVADO_DIR:=$XILINX_DIR/Vivado/2023.2}"
+echo "TCL_FILENAME $TCL_FILENAME"
 
-echo XILINX_DIR $XILINX_DIR
-echo TCL_FILENAME $TCL_FILENAME
-
-if [ -d "$XILINX_DIR/Vivado" ]; then
-    echo "$XILINX_DIR is found!"
+if [ -d "$VIVADO_DIR" ]; then
+    echo "\$VIVADO_DIR is found!"
 else
-    echo "$XILINX_DIR is not correct. Please check!"
+    echo "\$VIVADO_DIR is not correct. Please check!"
     exit 1
 fi
 
@@ -43,7 +42,7 @@ else
     exit 1
 fi
 
-source $XILINX_DIR/Vivado/2022.2/settings64.sh
+source "$VIVADO_DIR/settings64.sh"
 
 ARG1=""
 ARG2=""
@@ -76,11 +75,6 @@ if [[ -n $9 ]]; then
 fi
 
 set -x
-if [ "$TCL_FILENAME_CORE" = "openofdm_rx" ]; then
-  rm ./verilog/$TCL_FILENAME_CORE"_pre_def.v"
-else
-  rm ./src/$TCL_FILENAME_CORE"_pre_def.v"
-fi
 vivado -source $TCL_FILENAME -tclargs $ARG1 $ARG2 $ARG3 $ARG4 $ARG5 $ARG6 $ARG7
 set +x
 
