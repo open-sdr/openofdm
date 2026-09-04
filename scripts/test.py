@@ -9,7 +9,7 @@ import decode
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 PROJECT_ROOT = os.path.dirname(SCRIPT_DIR)
-VERILOG_DIR = os.path.join(PROJECT_ROOT, 'verilog')
+VERILOG_DIR = os.path.join(PROJECT_ROOT, 'src')
 SIM_OUT_DIR = os.path.join(VERILOG_DIR, 'sim_out')
 
 

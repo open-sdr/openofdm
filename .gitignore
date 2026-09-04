@@ -1,3 +1,15 @@
+*.log
+*.jou
+*.str
+*.logfile
+
 *.out
 *.vcd
 .virtualenv
+
+*_pre_def.v
+*_git_rev.v
+
+ip_repo
+ipshared
+openofdm_rx

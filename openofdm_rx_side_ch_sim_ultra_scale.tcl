@@ -14,7 +14,7 @@
 #*****************************************************************************************
 
 # -----------generate openofdm_rx_git_rev.v---------------
-set  fd  [open  "./verilog/openofdm_rx_git_rev.v"  w]
+set  fd  [open  "./src/openofdm_rx_git_rev.v"  w]
 set HASHCODE [exec ./get_git_rev.sh]
 puts $fd "`define OPENOFDM_RX_GIT_REV (32'h$HASHCODE)"
 close $fd
@@ -86,7 +86,7 @@ if { $::argc > 0 } {
 }
 
 # Set the directory path for the original project from where this script was exported
-set src_dir "[file normalize "$origin_dir/verilog"]"
+set src_dir "[file normalize "$origin_dir/src"]"
 
 # Create project
 create_project ${project_name} ./${project_name} -part xczu9eg-ffvb1156-2-e
@@ -113,9 +113,9 @@ set_property -name "compxlib.vcs_compiled_library_dir" -value "$proj_dir/${proje
 set_property -name "compxlib.xsim_compiled_library_dir" -value "" -objects $obj
 set_property -name "corecontainer.enable" -value "0" -objects $obj
 set_property -name "default_lib" -value "xil_defaultlib" -objects $obj
-set_property -name "dsa.num_compute_units" -value "60" -objects $obj
-set_property -name "dsa.rom.debug_type" -value "0" -objects $obj
-set_property -name "dsa.rom.prom_type" -value "0" -objects $obj
+set_property -name "platform.num_compute_units" -value "60" -objects $obj
+set_property -name "platform.rom.debug_type" -value "0" -objects $obj
+set_property -name "platform.rom.prom_type" -value "0" -objects $obj
 set_property -name "enable_optional_runs_sta" -value "0" -objects $obj
 set_property -name "generate_ip_upgrade_log" -value "1" -objects $obj
 set_property -name "ip_cache_permissions" -value "read write" -objects $obj
@@ -142,7 +142,7 @@ if {[string equal [get_filesets -quiet sources_1] ""]} {
 
 # Set IP repository paths
 set obj [get_filesets sources_1]
-set_property "ip_repo_paths" "[file normalize "$origin_dir/verilog/coregen/div_gen_new_ip_core_zynquplus"]" $obj
+set_property "ip_repo_paths" "[file normalize "$origin_dir/src/coregen/div_gen_new_ip_core_zynq"]" $obj
 
 # Rebuild user ip_repo's index before adding any source files
 update_ip_catalog -rebuild
@@ -150,44 +150,44 @@ update_ip_catalog -rebuild
 # Set 'sources_1' fileset object
 set obj [get_filesets sources_1]
 set files [list \
- [file normalize "${origin_dir}/../openofdminternal/verilog/Xilinx/zynquplus/complex_multiplier/complex_multiplier.xci"] \
- [file normalize "${origin_dir}/../openofdminternal/verilog/Xilinx/zynquplus/atan_lut/atan_lut.xci"] \
- [file normalize "${origin_dir}/../openofdminternal/verilog/bits_to_bytes.v"] \
- [file normalize "${origin_dir}/../openofdminternal/verilog/calc_mean.v"] \
- [file normalize "${origin_dir}/../openofdminternal/verilog/complex_mult.v"] \
- [file normalize "${origin_dir}/../openofdminternal/verilog/complex_to_mag.v"] \
- [file normalize "${origin_dir}/../openofdminternal/verilog/complex_to_mag_sq.v"] \
- [file normalize "${origin_dir}/../openofdminternal/verilog/crc32.v"] \
- [file normalize "${origin_dir}/../openofdminternal/verilog/deinterleave.v"] \
- [file normalize "${origin_dir}/../openofdminternal/verilog/delayT.v"] \
- [file normalize "${origin_dir}/../openofdminternal/verilog/delay_sample.v"] \
- [file normalize "${origin_dir}/../openofdminternal/verilog/common_defs.v"] \
- [file normalize "${origin_dir}/../openofdminternal/verilog/demodulate.v"] \
- [file normalize "${origin_dir}/../openofdminternal/verilog/descramble.v"] \
- [file normalize "${origin_dir}/../openofdminternal/verilog/coregen/div_gen_new_ip_core_zynquplus/src/div_gen.v"] \
- [file normalize "${origin_dir}/../openofdminternal/verilog/divider.v"] \
- [file normalize "${origin_dir}/../openofdminternal/verilog/dot11.v"] \
- [file normalize "${origin_dir}/../openofdminternal/verilog/equalizer.v"] \
- [file normalize "${origin_dir}/../openofdminternal/verilog/ht_sig_crc.v"] \
- [file normalize "${origin_dir}/../openofdminternal/verilog/moving_avg.v"] \
- [file normalize "${origin_dir}/../openofdminternal/verilog/ofdm_decoder.v"] \
- [file normalize "${origin_dir}/../openofdminternal/verilog/openofdm_rx_s_axi.v"] \
- [file normalize "${origin_dir}/../openofdminternal/verilog/phase.v"] \
- [file normalize "${origin_dir}/../openofdminternal/verilog/dpram.v"] \
- [file normalize "${origin_dir}/../openofdminternal/verilog/rotate.v"] \
- [file normalize "${origin_dir}/../openofdminternal/verilog/stage_mult.v"] \
- [file normalize "${origin_dir}/../openofdminternal/verilog/sync_long.v"] \
- [file normalize "${origin_dir}/../openofdminternal/verilog/sync_short.v"] \
- [file normalize "${origin_dir}/../openofdminternal/verilog/openofdm_rx.v"] \
- [file normalize "${origin_dir}/../openofdminternal/verilog/Xilinx/zynquplus/deinter_lut/deinter_lut.coe"] \
- [file normalize "${origin_dir}/../openofdminternal/verilog/Xilinx/zynquplus/atan_lut/atan_lut.coe"] \
- [file normalize "${origin_dir}/../openofdminternal/verilog/Xilinx/zynquplus/rot_lut/rot_lut.coe"] \
- [file normalize "${origin_dir}/../openofdminternal/verilog/Xilinx/zynquplus/viterbi/viterbi_v7_0.xci"] \
- [file normalize "${origin_dir}/../openofdminternal/verilog/Xilinx/zynquplus/deinter_lut/deinter_lut.xci"] \
- [file normalize "${origin_dir}/../openofdminternal/verilog/coregen/div_gen_new_ip_core_zynquplus/src/div_gen_div_gen_0_0/div_gen_div_gen_0_0.xci"] \
- [file normalize "${origin_dir}/../openofdminternal/verilog/coregen/div_gen_new_ip_core_zynquplus/src/div_gen_xlslice_0_0/div_gen_xlslice_0_0.xci"] \
- [file normalize "${origin_dir}/../openofdminternal/verilog/Xilinx/zynquplus/xfft/xfft_v9.xci"] \
- [file normalize "${origin_dir}/../openofdminternal/verilog/Xilinx/zynquplus/rot_lut/rot_lut.xci"] \
+ [file normalize "${origin_dir}/../openofdminternal/src/complex_multiplier/complex_multiplier.xci"] \
+ [file normalize "${origin_dir}/../openofdminternal/src/atan_lut/atan_lut.xci"] \
+ [file normalize "${origin_dir}/../openofdminternal/src/bits_to_bytes.v"] \
+ [file normalize "${origin_dir}/../openofdminternal/src/calc_mean.v"] \
+ [file normalize "${origin_dir}/../openofdminternal/src/complex_mult.v"] \
+ [file normalize "${origin_dir}/../openofdminternal/src/complex_to_mag.v"] \
+ [file normalize "${origin_dir}/../openofdminternal/src/complex_to_mag_sq.v"] \
+ [file normalize "${origin_dir}/../openofdminternal/src/crc32.v"] \
+ [file normalize "${origin_dir}/../openofdminternal/src/deinterleave.v"] \
+ [file normalize "${origin_dir}/../openofdminternal/src/delayT.v"] \
+ [file normalize "${origin_dir}/../openofdminternal/src/delay_sample.v"] \
+ [file normalize "${origin_dir}/../openofdminternal/src/common_defs.v"] \
+ [file normalize "${origin_dir}/../openofdminternal/src/demodulate.v"] \
+ [file normalize "${origin_dir}/../openofdminternal/src/descramble.v"] \
+ [file normalize "${origin_dir}/../openofdminternal/src/coregen/div_gen_new_ip_core_zynq/src/div_gen.v"] \
+ [file normalize "${origin_dir}/../openofdminternal/src/divider.v"] \
+ [file normalize "${origin_dir}/../openofdminternal/src/dot11.v"] \
+ [file normalize "${origin_dir}/../openofdminternal/src/equalizer.v"] \
+ [file normalize "${origin_dir}/../openofdminternal/src/ht_sig_crc.v"] \
+ [file normalize "${origin_dir}/../openofdminternal/src/moving_avg.v"] \
+ [file normalize "${origin_dir}/../openofdminternal/src/ofdm_decoder.v"] \
+ [file normalize "${origin_dir}/../openofdminternal/src/openofdm_rx_s_axi.v"] \
+ [file normalize "${origin_dir}/../openofdminternal/src/phase.v"] \
+ [file normalize "${origin_dir}/../openofdminternal/src/dpram.v"] \
+ [file normalize "${origin_dir}/../openofdminternal/src/rotate.v"] \
+ [file normalize "${origin_dir}/../openofdminternal/src/stage_mult.v"] \
+ [file normalize "${origin_dir}/../openofdminternal/src/sync_long.v"] \
+ [file normalize "${origin_dir}/../openofdminternal/src/sync_short.v"] \
+ [file normalize "${origin_dir}/../openofdminternal/src/openofdm_rx.v"] \
+ [file normalize "${origin_dir}/../openofdminternal/src/deinter_lut/deinter_lut/deinter_lut.coe"] \
+ [file normalize "${origin_dir}/../openofdminternal/src/atan_lut/atan_lut.coe"] \
+ [file normalize "${origin_dir}/../openofdminternal/src/rot_lut/rot_lut.coe"] \
+ [file normalize "${origin_dir}/../openofdminternal/src/viterbi/viterbi_v7_0.xci"] \
+ [file normalize "${origin_dir}/../openofdminternal/src/deinter_lut/deinter_lut.xci"] \
+ [file normalize "${origin_dir}/../openofdminternal/src/coregen/div_gen_new_ip_core_zynq/src/div_gen_div_gen_0_0/div_gen_div_gen_0_0.xci"] \
+ [file normalize "${origin_dir}/../openofdminternal/src/coregen/div_gen_new_ip_core_zynq/src/div_gen_xlslice_0_0/div_gen_xlslice_0_0.xci"] \
+ [file normalize "${origin_dir}/../openofdminternal/src/xfft/xfft_v9.xci"] \
+ [file normalize "${origin_dir}/../openofdminternal/src/rot_lut/rot_lut.xci"] \
  [file normalize "${origin_dir}/../openwifi-hw/ip/xpu/src/phy_rx_parse.v"] \
  [file normalize "${origin_dir}/../openwifi-hw/ip/side_ch/src/side_ch_control.v"] \
  [file normalize "${origin_dir}/../openwifi-hw/ip/side_ch/src/side_ch_m_axis.v"] \
@@ -201,7 +201,7 @@ set files [list \
 add_files -norecurse -fileset $obj $files
 
 # #Set 'sources_1' fileset file properties for remote files
-#set file "$origin_dir/verilog/coregen/div_gen_v3_0.ngc"
+#set file "$origin_dir/src/coregen/div_gen_v3_0.ngc"
 #set file [file normalize $file]
 #set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
 #set_property -name "file_type" -value "NGC" -objects $file_obj
@@ -247,7 +247,7 @@ if {[string equal [get_filesets -quiet sim_1] ""]} {
 # Set 'sim_1' fileset object
 set obj [get_filesets sim_1]
 set files [list \
- "[file normalize "$origin_dir/verilog/dot11_side_ch_tb.v"]"
+ "[file normalize "$origin_dir/src/dot11_side_ch_tb.v"]"
 ]
 add_files -norecurse -fileset $obj $files
 # Empty (no sources present)
@@ -342,7 +342,7 @@ set_property -name "steps.synth_design.args.gated_clock_conversion" -value "off"
 set_property -name "steps.synth_design.args.bufg" -value "12" -objects $obj
 set_property -name "steps.synth_design.args.fanout_limit" -value "10000" -objects $obj
 set_property -name "steps.synth_design.args.directive" -value "Default" -objects $obj
-set_property -name "steps.synth_design.args.retiming" -value "0" -objects $obj
+set_property -name "steps.synth_design.args.global_retiming" -value "auto" -objects $obj
 set_property -name "steps.synth_design.args.fsm_extraction" -value "auto" -objects $obj
 set_property -name "steps.synth_design.args.keep_equivalent_registers" -value "0" -objects $obj
 set_property -name "steps.synth_design.args.resource_sharing" -value "auto" -objects $obj

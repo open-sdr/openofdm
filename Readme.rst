@@ -52,7 +52,7 @@ host.
 A: OpenOFDM FPGA module is configurable via USRP user setting registers
 (``set_user_reg`` function). The
 register address definition is in `common_params.v
-<https://github.com/jhshi/openofdm/blob/master/verilog/common_params.v>`_. The
+<https://github.com/jhshi/openofdm/blob/master/src/common_params.v>`_. The
 whole OpenOFM FPGA module takes 32 bit I/Q samples and outputs decoded bytes. It
 is supposed to be placed in the receive chain of the USRP (e.g.,
 ``custom_dsp_rx.v``.

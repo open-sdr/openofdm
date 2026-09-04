@@ -24,93 +24,77 @@
 # argument 3: IQ sample filename with full path (for SAMPLE_FILE in dot11_tb.v). Change it in pre_def.v according to your need later on.
 # argument 4~7 (if exist): for `define OPENOFDM_RX_ARGUMENT in openofdm_rx_pre_def.v to enable some compiling time conditions
 
-set ARGUMENT1 [lindex $argv 0]
-set ARGUMENT2 [lindex $argv 1]
-set ARGUMENT3 [lindex $argv 2]
-set ARGUMENT4 [lindex $argv 3]
-set ARGUMENT5 [lindex $argv 4]
-set ARGUMENT6 [lindex $argv 5]
-set ARGUMENT7 [lindex $argv 6]
+set BOARD_NAME [lindex $argv 0]
+set NUM_CLK_PER_US [lindex $argv 1]
+set SAMPLE_FILE [lindex $argv 2]
 
-if {$ARGUMENT1 eq ""} {
-  set BOARD_NAME zed_fmcs2
+if {$BOARD_NAME eq ""} { set BOARD_NAME "zed_fmcs2" }
+if {$NUM_CLK_PER_US eq ""} { set NUM_CLK_PER_US 100 }
+
+set DEFINE_LIST [list \
+    [lindex $argv 4] \
+    [lindex $argv 5] \
+    [lindex $argv 6] \
+    [lindex $argv 7] \
+]
+
+if {[file exists "../parse_board_name.tcl"]} {
+    source ../parse_board_name.tcl
+} elseif {[file exists "./parse_board_name.tcl"]} {
+    source ./parse_board_name.tcl
 } else {
-  set BOARD_NAME $ARGUMENT1
+    puts "ERROR: parse_board_name.tcl not found!"
+    return 1
 }
 
-if {$ARGUMENT2 eq ""} {
-  set NUM_CLK_PER_US 100
-} else {
-  set NUM_CLK_PER_US $ARGUMENT2
+if {$part_string eq ""} {
+  puts "ERROR: Part string is empty. Script aborted."
+  return 1
 }
 
-source ./parse_board_name.tcl
-
-set MODULE_NAME OPENOFDM_RX
-set  fd  [open  "./verilog/openofdm_rx_pre_def.v"  a]
 if {$NUM_CLK_PER_US == 100} {
-  puts $fd "`define CLK_SPEED_100M"
+  lappend DEFINE_LIST "CLK_SPEED_100M"
 } elseif {$NUM_CLK_PER_US == 200} {
-  puts $fd "`define CLK_SPEED_200M"
+  lappend DEFINE_LIST "CLK_SPEED_200M"
 } elseif {$NUM_CLK_PER_US == 240} {
-  puts $fd "`define CLK_SPEED_240M"
+  lappend DEFINE_LIST "CLK_SPEED_240M"
 } elseif {$NUM_CLK_PER_US == 400} {
-  puts $fd "`define CLK_SPEED_400M"
+  lappend DEFINE_LIST "CLK_SPEED_400M"
 } else {
   throw {NUM_CLK_PER_US MUST BE 100/200/240/400!}
 }
 
-puts $fd "`define BETTER_SENSITIVITY"
+lappend DEFINE_LIST "BETTER_SENSITIVITY"
 
 # fpga_size_flag is set by parse_board_name.tcl
 # If it is not SMALL_FPGA, HAS_OLD_SOFT_BITS_METHOD will be defined to also include old hard patition based soft bits
 # Due to tsn branch has extra logic, the SMALL_FPGA can not afford this extra old method in FPGA
 if {$fpga_size_flag == 1} {
-  puts $fd "`define HAS_OLD_SOFT_BITS_METHOD 1"
+  lappend DEFINE_LIST "HAS_OLD_SOFT_BITS_METHOD 1"
 }
 
-if {$ARGUMENT3 eq ""} {
-  puts $fd "`define SAMPLE_FILE \"../../../../../testing_inputs/simulated/ht_mcs7_gi1_aggr0_len14_pre100_post200_openwifi.txt\""
+if {$SAMPLE_FILE eq ""} {
+  lappend DEFINE_LIST "SAMPLE_FILE \"../../../../../testing_inputs/simulated/ht_mcs7_gi1_aggr0_len14_pre100_post200_openwifi.txt\""
 } else {
-  puts $fd "`define SAMPLE_FILE \"$ARGUMENT3\""
-  set fc_filename [string range $ARGUMENT3 0 end-4]
+  lappend DEFINE_LIST "SAMPLE_FILE \"$SAMPLE_FILE\""
+  set fc_filename [string range $SAMPLE_FILE 0 end-4]
   append fc_filename "_Fc_input.txt"
-  # puts $fd "`define FC_IN_FILE \"$fc_filename\""
+  # lappend DEFINE_LIST "FC_IN_FILE \"$fc_filename\""
 }
-if {$ARGUMENT4 eq ""} {
-  puts $fd " "
-} else {
-  puts $fd "`define $MODULE_NAME\_$ARGUMENT4"
-}
-if {$ARGUMENT5 eq ""} {
-  puts $fd " "
-} else {
-  puts $fd "`define $MODULE_NAME\_$ARGUMENT5"
-}
-if {$ARGUMENT6 eq ""} {
-  puts $fd " "
-} else {
-  puts $fd "`define $MODULE_NAME\_$ARGUMENT6"
-}
-if {$ARGUMENT7 eq ""} {
-  puts $fd " "
-} else {
-  puts $fd "`define $MODULE_NAME\_$ARGUMENT7"
-}
-puts $fd "`define $BOARD_NAME"
-close $fd
-#-----end of process arguments (if exist)-------
 
-puts "BOARD_NAME $BOARD_NAME"
-puts "NUM_CLK_PER_US $NUM_CLK_PER_US"
+set MODULE_NAME OPENOFDM_RX
+
+if {[file exists "../generate_configs.tcl"]} {
+    source ../generate_configs.tcl
+} elseif {[file exists "./generate_configs.tcl"]} {
+    source ./generate_configs.tcl
+} else {
+    puts "ERROR: generate_configs.tcl not found!"
+    return 1
+}
+lassign [generate_system_configs $MODULE_NAME $BOARD_NAME $NUM_CLK_PER_US $fpga_size_flag $DEFINE_LIST "./src"] global_config local_config
+
 puts "ultra_scale_flag $ultra_scale_flag"
-puts "part_string $part_string"
-puts "fpga_size_flag $fpga_size_flag"
-puts "ARGUMENT3 $ARGUMENT3"
-puts "ARGUMENT4 $MODULE_NAME\_$ARGUMENT4"
-puts "ARGUMENT5 $MODULE_NAME\_$ARGUMENT5"
-puts "ARGUMENT6 $MODULE_NAME\_$ARGUMENT6"
-puts "ARGUMENT7 $MODULE_NAME\_$ARGUMENT7"
 
 #------------some defines related to sub-IP---------------------
 if {$ultra_scale_flag == 0} {
@@ -121,7 +105,7 @@ if {$ultra_scale_flag == 0} {
 #-----end of some defines related to sub-IP---------------------
 
 # -----------generate openofdm_rx_git_rev.v---------------
-set  fd  [open  "./verilog/openofdm_rx_git_rev.v"  w]
+set  fd  [open  "./src/openofdm_rx_git_rev.v"  w]
 set HASHCODE [exec ./get_git_rev.sh]
 puts $fd "`define OPENOFDM_RX_GIT_REV (32'h$HASHCODE)"
 close $fd
@@ -135,8 +119,8 @@ set origin_dir [file dirname [info script]]
 file delete -force $origin_dir/ip_repo
 file mkdir $origin_dir/ip_repo
 
-file copy -force $origin_dir/verilog/coregen/div_gen_new_ip_core_$ip_fix_string $origin_dir/ip_repo/div_gen_new
-exec cp -rf $origin_dir/verilog/Xilinx/$ip_fix_string/. $origin_dir/ip_repo/
+file copy -force $origin_dir/src/coregen/div_gen_new_ip_core_$ip_fix_string $origin_dir/ip_repo/div_gen_new
+exec cp -rf $origin_dir/src/ip/. $origin_dir/ip_repo/
 #---end of copy---------------------------------------------------------------------------------
 
 # Use origin directory path location variable, if specified in the tcl shell
@@ -202,7 +186,7 @@ if { $::argc > 0 } {
 }
 
 # Set the directory path for the original project from where this script was exported
-set src_dir "[file normalize "$origin_dir/verilog"]"
+set src_dir "[file normalize "$origin_dir/src"]"
 
 # Create project
 create_project ${project_name} ./${project_name} -part $part_string
@@ -229,9 +213,9 @@ set_property -name "compxlib.vcs_compiled_library_dir" -value "$proj_dir/${proje
 set_property -name "compxlib.xsim_compiled_library_dir" -value "" -objects $obj
 set_property -name "corecontainer.enable" -value "0" -objects $obj
 set_property -name "default_lib" -value "xil_defaultlib" -objects $obj
-set_property -name "dsa.num_compute_units" -value "60" -objects $obj
-set_property -name "dsa.rom.debug_type" -value "0" -objects $obj
-set_property -name "dsa.rom.prom_type" -value "0" -objects $obj
+set_property -name "platform.num_compute_units" -value "60" -objects $obj
+set_property -name "platform.rom.debug_type" -value "0" -objects $obj
+set_property -name "platform.rom.prom_type" -value "0" -objects $obj
 set_property -name "enable_optional_runs_sta" -value "0" -objects $obj
 set_property -name "generate_ip_upgrade_log" -value "1" -objects $obj
 set_property -name "ip_cache_permissions" -value "read write" -objects $obj
@@ -258,7 +242,7 @@ if {[string equal [get_filesets -quiet sources_1] ""]} {
 
 # Set IP repository paths
 set obj [get_filesets sources_1]
-set_property ip_repo_paths [list $origin_dir/verilog/coregen/div_gen_new_ip_core_$ip_fix_string] $obj
+set_property ip_repo_paths [list $origin_dir/src/coregen/div_gen_new_ip_core_$ip_fix_string] $obj
 
 # Rebuild user ip_repo's index before adding any source files
 update_ip_catalog -rebuild
@@ -266,38 +250,38 @@ update_ip_catalog -rebuild
 # Set 'sources_1' fileset object
 set obj [get_filesets sources_1]
 set files [list \
- "[file normalize "$origin_dir/verilog/calc_mean.v"]"\
- "[file normalize "$origin_dir/verilog/equalizer.v"]"\
- "[file normalize "$origin_dir/verilog/dot11_setting_agent.v"]"\
- "[file normalize "$origin_dir/verilog/bits_to_bytes.v"]"\
- "[file normalize "$origin_dir/verilog/complex_mult.v"]"\
- "[file normalize "$origin_dir/verilog/complex_to_mag.v"]"\
- "[file normalize "$origin_dir/verilog/complex_to_mag_sq.v"]"\
- "[file normalize "$origin_dir/verilog/crc32.v"]"\
- "[file normalize "$origin_dir/verilog/deinterleave.v"]"\
- "[file normalize "$origin_dir/verilog/delayT.v"]"\
- "[file normalize "$origin_dir/verilog/fifo_sample_delay.v"]"\
- "[file normalize "$origin_dir/verilog/common_defs.v"]"\
- "[file normalize "$origin_dir/verilog/demodulate.v"]"\
- "[file normalize "$origin_dir/verilog/descramble.v"]"\
- "[file normalize "$origin_dir/verilog/divider.v"]"\
- "[file normalize "$origin_dir/verilog/dot11.v"]"\
- "[file normalize "$origin_dir/verilog/ht_sig_crc.v"]"\
- "[file normalize "$origin_dir/verilog/mv_avg.v"]"\
- "[file normalize "$origin_dir/verilog/mv_avg_dual_ch.v"]"\
- "[file normalize "$origin_dir/verilog/ofdm_decoder.v"]"\
- "[file normalize "$origin_dir/verilog/openofdm_rx_s_axi.v"]"\
- "[file normalize "$origin_dir/verilog/phase.v"]"\
- "[file normalize "$origin_dir/verilog/dpram.v"]"\
- "[file normalize "$origin_dir/verilog/rotate.v"]"\
- "[file normalize "$origin_dir/verilog/stage_mult.v"]"\
- "[file normalize "$origin_dir/verilog/sync_long.v"]"\
- "[file normalize "$origin_dir/verilog/sync_short.v"]"\
- "[file normalize "$origin_dir/verilog/openofdm_rx.v"]"\
- "[file normalize "$origin_dir/verilog/running_sum_dual_ch.v"]"\
- "[file normalize "$origin_dir/verilog/signal_watchdog.v"]"\
- "[file normalize "$origin_dir/verilog/phy_len_calculation.v"]"\
- "[file normalize "$origin_dir/verilog/rot_after_fft.v"]"\
+ "[file normalize "$origin_dir/src/calc_mean.v"]"\
+ "[file normalize "$origin_dir/src/equalizer.v"]"\
+ "[file normalize "$origin_dir/src/dot11_setting_agent.v"]"\
+ "[file normalize "$origin_dir/src/bits_to_bytes.v"]"\
+ "[file normalize "$origin_dir/src/complex_mult.v"]"\
+ "[file normalize "$origin_dir/src/complex_to_mag.v"]"\
+ "[file normalize "$origin_dir/src/complex_to_mag_sq.v"]"\
+ "[file normalize "$origin_dir/src/crc32.v"]"\
+ "[file normalize "$origin_dir/src/deinterleave.v"]"\
+ "[file normalize "$origin_dir/src/delayT.v"]"\
+ "[file normalize "$origin_dir/src/fifo_sample_delay.v"]"\
+ "[file normalize "$origin_dir/src/common_defs.v"]"\
+ "[file normalize "$origin_dir/src/demodulate.v"]"\
+ "[file normalize "$origin_dir/src/descramble.v"]"\
+ "[file normalize "$origin_dir/src/divider.v"]"\
+ "[file normalize "$origin_dir/src/dot11.v"]"\
+ "[file normalize "$origin_dir/src/ht_sig_crc.v"]"\
+ "[file normalize "$origin_dir/src/mv_avg.v"]"\
+ "[file normalize "$origin_dir/src/mv_avg_dual_ch.v"]"\
+ "[file normalize "$origin_dir/src/ofdm_decoder.v"]"\
+ "[file normalize "$origin_dir/src/openofdm_rx_s_axi.v"]"\
+ "[file normalize "$origin_dir/src/phase.v"]"\
+ "[file normalize "$origin_dir/src/dpram.v"]"\
+ "[file normalize "$origin_dir/src/rotate.v"]"\
+ "[file normalize "$origin_dir/src/stage_mult.v"]"\
+ "[file normalize "$origin_dir/src/sync_long.v"]"\
+ "[file normalize "$origin_dir/src/sync_short.v"]"\
+ "[file normalize "$origin_dir/src/openofdm_rx.v"]"\
+ "[file normalize "$origin_dir/src/running_sum_dual_ch.v"]"\
+ "[file normalize "$origin_dir/src/signal_watchdog.v"]"\
+ "[file normalize "$origin_dir/src/phy_len_calculation.v"]"\
+ "[file normalize "$origin_dir/src/rot_after_fft.v"]"\
  "[file normalize "$origin_dir/ip_repo/div_for_rotafft/div_for_rotafft.xci"]"\
  "[file normalize "$origin_dir/ip_repo/complex_multiplier/complex_multiplier.xci"]"\
  "[file normalize "$origin_dir/ip_repo/atan_lut/atan_lut.coe"]"\
@@ -321,7 +305,7 @@ set files [list \
 add_files -norecurse -fileset $obj $files
 
 # #Set 'sources_1' fileset file properties for remote files
-#set file "$origin_dir/verilog/coregen/div_gen_v3_0.ngc"
+#set file "$origin_dir/src/coregen/div_gen_v3_0.ngc"
 #set file [file normalize $file]
 #set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
 #set_property -name "file_type" -value "NGC" -objects $file_obj
@@ -330,6 +314,7 @@ add_files -norecurse -fileset $obj $files
 
 # Set 'sources_1' fileset properties
 set obj [get_filesets sources_1]
+set_property -name "include_dirs" -value [list [file normalize "$origin_dir/.."]] -objects $obj
 set_property -name "top" -value "openofdm_rx" -objects $obj
 
 # Create 'constrs_1' fileset (if not found)
@@ -355,7 +340,7 @@ if {[string equal [get_filesets -quiet sim_1] ""]} {
 # Set 'sim_1' fileset object
 set obj [get_filesets sim_1]
 set files [list \
- "[file normalize "$origin_dir/verilog/dot11_tb.v"]"
+ "[file normalize "$origin_dir/src/dot11_tb.v"]"
 ]
 add_files -norecurse -fileset $obj $files
 # Empty (no sources present)
@@ -450,7 +435,7 @@ set_property -name "steps.synth_design.args.gated_clock_conversion" -value "off"
 set_property -name "steps.synth_design.args.bufg" -value "12" -objects $obj
 # set_property -name "steps.synth_design.args.fanout_limit" -value "10000" -objects $obj
 set_property -name "steps.synth_design.args.directive" -value "Default" -objects $obj
-set_property -name "steps.synth_design.args.retiming" -value "0" -objects $obj
+set_property -name "steps.synth_design.args.global_retiming" -value "auto" -objects $obj
 set_property -name "steps.synth_design.args.fsm_extraction" -value "auto" -objects $obj
 set_property -name "steps.synth_design.args.keep_equivalent_registers" -value "0" -objects $obj
 set_property -name "steps.synth_design.args.resource_sharing" -value "auto" -objects $obj
