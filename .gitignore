@@ -7,7 +7,6 @@
 *.vcd
 .virtualenv
 
-local_config
 *_pre_def.v
 *_git_rev.v
 
