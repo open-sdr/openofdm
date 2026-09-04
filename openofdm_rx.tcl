@@ -213,9 +213,9 @@ set_property -name "compxlib.vcs_compiled_library_dir" -value "$proj_dir/${proje
 set_property -name "compxlib.xsim_compiled_library_dir" -value "" -objects $obj
 set_property -name "corecontainer.enable" -value "0" -objects $obj
 set_property -name "default_lib" -value "xil_defaultlib" -objects $obj
-set_property -name "dsa.num_compute_units" -value "60" -objects $obj
-set_property -name "dsa.rom.debug_type" -value "0" -objects $obj
-set_property -name "dsa.rom.prom_type" -value "0" -objects $obj
+set_property -name "platform.num_compute_units" -value "60" -objects $obj
+set_property -name "platform.rom.debug_type" -value "0" -objects $obj
+set_property -name "platform.rom.prom_type" -value "0" -objects $obj
 set_property -name "enable_optional_runs_sta" -value "0" -objects $obj
 set_property -name "generate_ip_upgrade_log" -value "1" -objects $obj
 set_property -name "ip_cache_permissions" -value "read write" -objects $obj
@@ -435,7 +435,7 @@ set_property -name "steps.synth_design.args.gated_clock_conversion" -value "off"
 set_property -name "steps.synth_design.args.bufg" -value "12" -objects $obj
 # set_property -name "steps.synth_design.args.fanout_limit" -value "10000" -objects $obj
 set_property -name "steps.synth_design.args.directive" -value "Default" -objects $obj
-set_property -name "steps.synth_design.args.retiming" -value "0" -objects $obj
+set_property -name "steps.synth_design.args.global_retiming" -value "auto" -objects $obj
 set_property -name "steps.synth_design.args.fsm_extraction" -value "auto" -objects $obj
 set_property -name "steps.synth_design.args.keep_equivalent_registers" -value "0" -objects $obj
 set_property -name "steps.synth_design.args.resource_sharing" -value "auto" -objects $obj
