@@ -76,6 +76,24 @@ if {$BOARD_NAME=="zed_fmcs2"} {
    set board_part_string []
    set board_id_string []
    set fpga_size_flag 0
+} elseif {$BOARD_NAME=="pzp201pro"} {
+   set ultra_scale_flag 0
+   set part_string xc7z020clg400-1
+   set board_part_string []
+   set board_id_string []
+   set fpga_size_flag 0
+} elseif {$BOARD_NAME=="pzp351"} {
+   set ultra_scale_flag 0
+   set part_string "xc7z035ffg900-2"
+   set board_part_string []
+   set board_id_string []
+   set fpga_size_flag 1
+} elseif {$BOARD_NAME=="pzp101"} {
+   set ultra_scale_flag 0
+   set part_string xc7z100ffg900-2
+   set board_part_string []
+   set board_id_string []
+   set fpga_size_flag 1
 } else {
    set ultra_scale_flag []
    set part_string []
