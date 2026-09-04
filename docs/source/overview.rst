@@ -74,14 +74,14 @@ data bytes and various PHY properties.
 Project Structure
 -----------------
 
-In the :file:`verilog` sub-directory, you will find the Verilog implementations
+In the :file:`src` sub-directory, you will find the Verilog implementations
 of various modules. The implementations were originally targeted for the Xilinx
 Spartan 3A-DSP 3400 FPGA inside the USRP N210 device, thus there are various
 dependences to Xilinx libraries and USRP code base. In particular:
 
-- :file:`verilog/Xilinx` contains the Xilinx specific libraries
-- :file:`verilog/coregen` contains generated IP cores from Xilinx ISE
-- :file:`verilog/usrp2` contains USRP specific modules
+- :file:`src/Xilinx` contains the Xilinx specific libraries
+- :file:`src/coregen` contains generated IP cores from Xilinx ISE
+- :file:`src/usrp2` contains USRP specific modules
 
 However, the project is self-contained and is ready for simulation using `Icarus
 Verilog <http://iverilog.icarus.com/>`_ tool chain, including ``iverilog`` and

@@ -100,15 +100,15 @@ This :math:`arctan` look up table is generated using the
 Note that we also scale up the :math:`arctan` values to distinguish adjacent
 values. This also systematically scale up :math:`\pi` in |project|. In fact,
 :math:`\pi` is defined as :math:`1608=int(\pi*512)` in
-:file:`verilog/common_params.v`.
+:file:`src/common_params.v`.
 
-The generated lookup table is stored in the ``verilog/atan_lut.coe``
+The generated lookup table is stored in the ``src/atan_lut.coe``
 file (see `COE File Syntax
 <https://www.xilinx.com/support/documentation/sw_manuals/xilinx11/cgn_r_coe_file_syntax.htm>`_).
 Refer to `this guide
 <https://www.xilinx.com/itp/xilinx10/isehelp/cgn_p_memed_single_block.htm>`_ on
 how to create a look up table in Xilinx ISE. The generated module is stored in
-:file:`verilog/coregen/atan_lut.v`.
+:file:`src/coregen/atan_lut.v`.
 
 
 
@@ -117,7 +117,7 @@ how to create a look up table in Xilinx ISE. The generated module is stored in
 Rotation
 --------
 
-- **Module**: :file:`/verilog/rotate.v`
+- **Module**: :file:`/src/rotate.v`
 - **Input**: ``i (16), q (16), phase (32)``
 - **Output**: ``out_i (16), out_q (16)``
 - **Note**: The input phase is assumed to be scaled up by 512.

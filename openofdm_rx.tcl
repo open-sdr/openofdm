@@ -105,7 +105,7 @@ if {$ultra_scale_flag == 0} {
 #-----end of some defines related to sub-IP---------------------
 
 # -----------generate openofdm_rx_git_rev.v---------------
-set  fd  [open  "./verilog/openofdm_rx_git_rev.v"  w]
+set  fd  [open  "./src/openofdm_rx_git_rev.v"  w]
 set HASHCODE [exec ./get_git_rev.sh]
 puts $fd "`define OPENOFDM_RX_GIT_REV (32'h$HASHCODE)"
 close $fd
@@ -119,8 +119,8 @@ set origin_dir [file dirname [info script]]
 file delete -force $origin_dir/ip_repo
 file mkdir $origin_dir/ip_repo
 
-file copy -force $origin_dir/verilog/coregen/div_gen_new_ip_core_$ip_fix_string $origin_dir/ip_repo/div_gen_new
-exec cp -rf $origin_dir/verilog/Xilinx/$ip_fix_string/. $origin_dir/ip_repo/
+file copy -force $origin_dir/src/coregen/div_gen_new_ip_core_$ip_fix_string $origin_dir/ip_repo/div_gen_new
+exec cp -rf $origin_dir/src/ip/. $origin_dir/ip_repo/
 #---end of copy---------------------------------------------------------------------------------
 
 # Use origin directory path location variable, if specified in the tcl shell
@@ -186,7 +186,7 @@ if { $::argc > 0 } {
 }
 
 # Set the directory path for the original project from where this script was exported
-set src_dir "[file normalize "$origin_dir/verilog"]"
+set src_dir "[file normalize "$origin_dir/src"]"
 
 # Create project
 create_project ${project_name} ./${project_name} -part $part_string
@@ -242,7 +242,7 @@ if {[string equal [get_filesets -quiet sources_1] ""]} {
 
 # Set IP repository paths
 set obj [get_filesets sources_1]
-set_property ip_repo_paths [list $origin_dir/verilog/coregen/div_gen_new_ip_core_$ip_fix_string] $obj
+set_property ip_repo_paths [list $origin_dir/src/coregen/div_gen_new_ip_core_$ip_fix_string] $obj
 
 # Rebuild user ip_repo's index before adding any source files
 update_ip_catalog -rebuild
@@ -250,38 +250,38 @@ update_ip_catalog -rebuild
 # Set 'sources_1' fileset object
 set obj [get_filesets sources_1]
 set files [list \
- "[file normalize "$origin_dir/verilog/calc_mean.v"]"\
- "[file normalize "$origin_dir/verilog/equalizer.v"]"\
- "[file normalize "$origin_dir/verilog/dot11_setting_agent.v"]"\
- "[file normalize "$origin_dir/verilog/bits_to_bytes.v"]"\
- "[file normalize "$origin_dir/verilog/complex_mult.v"]"\
- "[file normalize "$origin_dir/verilog/complex_to_mag.v"]"\
- "[file normalize "$origin_dir/verilog/complex_to_mag_sq.v"]"\
- "[file normalize "$origin_dir/verilog/crc32.v"]"\
- "[file normalize "$origin_dir/verilog/deinterleave.v"]"\
- "[file normalize "$origin_dir/verilog/delayT.v"]"\
- "[file normalize "$origin_dir/verilog/fifo_sample_delay.v"]"\
- "[file normalize "$origin_dir/verilog/common_defs.v"]"\
- "[file normalize "$origin_dir/verilog/demodulate.v"]"\
- "[file normalize "$origin_dir/verilog/descramble.v"]"\
- "[file normalize "$origin_dir/verilog/divider.v"]"\
- "[file normalize "$origin_dir/verilog/dot11.v"]"\
- "[file normalize "$origin_dir/verilog/ht_sig_crc.v"]"\
- "[file normalize "$origin_dir/verilog/mv_avg.v"]"\
- "[file normalize "$origin_dir/verilog/mv_avg_dual_ch.v"]"\
- "[file normalize "$origin_dir/verilog/ofdm_decoder.v"]"\
- "[file normalize "$origin_dir/verilog/openofdm_rx_s_axi.v"]"\
- "[file normalize "$origin_dir/verilog/phase.v"]"\
- "[file normalize "$origin_dir/verilog/dpram.v"]"\
- "[file normalize "$origin_dir/verilog/rotate.v"]"\
- "[file normalize "$origin_dir/verilog/stage_mult.v"]"\
- "[file normalize "$origin_dir/verilog/sync_long.v"]"\
- "[file normalize "$origin_dir/verilog/sync_short.v"]"\
- "[file normalize "$origin_dir/verilog/openofdm_rx.v"]"\
- "[file normalize "$origin_dir/verilog/running_sum_dual_ch.v"]"\
- "[file normalize "$origin_dir/verilog/signal_watchdog.v"]"\
- "[file normalize "$origin_dir/verilog/phy_len_calculation.v"]"\
- "[file normalize "$origin_dir/verilog/rot_after_fft.v"]"\
+ "[file normalize "$origin_dir/src/calc_mean.v"]"\
+ "[file normalize "$origin_dir/src/equalizer.v"]"\
+ "[file normalize "$origin_dir/src/dot11_setting_agent.v"]"\
+ "[file normalize "$origin_dir/src/bits_to_bytes.v"]"\
+ "[file normalize "$origin_dir/src/complex_mult.v"]"\
+ "[file normalize "$origin_dir/src/complex_to_mag.v"]"\
+ "[file normalize "$origin_dir/src/complex_to_mag_sq.v"]"\
+ "[file normalize "$origin_dir/src/crc32.v"]"\
+ "[file normalize "$origin_dir/src/deinterleave.v"]"\
+ "[file normalize "$origin_dir/src/delayT.v"]"\
+ "[file normalize "$origin_dir/src/fifo_sample_delay.v"]"\
+ "[file normalize "$origin_dir/src/common_defs.v"]"\
+ "[file normalize "$origin_dir/src/demodulate.v"]"\
+ "[file normalize "$origin_dir/src/descramble.v"]"\
+ "[file normalize "$origin_dir/src/divider.v"]"\
+ "[file normalize "$origin_dir/src/dot11.v"]"\
+ "[file normalize "$origin_dir/src/ht_sig_crc.v"]"\
+ "[file normalize "$origin_dir/src/mv_avg.v"]"\
+ "[file normalize "$origin_dir/src/mv_avg_dual_ch.v"]"\
+ "[file normalize "$origin_dir/src/ofdm_decoder.v"]"\
+ "[file normalize "$origin_dir/src/openofdm_rx_s_axi.v"]"\
+ "[file normalize "$origin_dir/src/phase.v"]"\
+ "[file normalize "$origin_dir/src/dpram.v"]"\
+ "[file normalize "$origin_dir/src/rotate.v"]"\
+ "[file normalize "$origin_dir/src/stage_mult.v"]"\
+ "[file normalize "$origin_dir/src/sync_long.v"]"\
+ "[file normalize "$origin_dir/src/sync_short.v"]"\
+ "[file normalize "$origin_dir/src/openofdm_rx.v"]"\
+ "[file normalize "$origin_dir/src/running_sum_dual_ch.v"]"\
+ "[file normalize "$origin_dir/src/signal_watchdog.v"]"\
+ "[file normalize "$origin_dir/src/phy_len_calculation.v"]"\
+ "[file normalize "$origin_dir/src/rot_after_fft.v"]"\
  "[file normalize "$origin_dir/ip_repo/div_for_rotafft/div_for_rotafft.xci"]"\
  "[file normalize "$origin_dir/ip_repo/complex_multiplier/complex_multiplier.xci"]"\
  "[file normalize "$origin_dir/ip_repo/atan_lut/atan_lut.coe"]"\
@@ -305,7 +305,7 @@ set files [list \
 add_files -norecurse -fileset $obj $files
 
 # #Set 'sources_1' fileset file properties for remote files
-#set file "$origin_dir/verilog/coregen/div_gen_v3_0.ngc"
+#set file "$origin_dir/src/coregen/div_gen_v3_0.ngc"
 #set file [file normalize $file]
 #set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
 #set_property -name "file_type" -value "NGC" -objects $file_obj
@@ -340,7 +340,7 @@ if {[string equal [get_filesets -quiet sim_1] ""]} {
 # Set 'sim_1' fileset object
 set obj [get_filesets sim_1]
 set files [list \
- "[file normalize "$origin_dir/verilog/dot11_tb.v"]"
+ "[file normalize "$origin_dir/src/dot11_tb.v"]"
 ]
 add_files -norecurse -fileset $obj $files
 # Empty (no sources present)

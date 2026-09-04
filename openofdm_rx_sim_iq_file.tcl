@@ -18,8 +18,8 @@ puts "sim_time_us $sim_time_us"
 set result_dir [string range $iq_filename 0 end-4]
 puts "result_dir $result_dir"
 
-# Append the simulation iq file to ./verilog/openofdm_rx_pre_def.v
-set  fd  [open  "./verilog/openofdm_rx_pre_def.v"  a]
+# Append the simulation iq file to ./src/openofdm_rx_pre_def.v
+set  fd  [open  "./src/openofdm_rx_pre_def.v"  a]
 puts $fd "`define SAMPLE_FILE \"$iq_filename\""
 close $fd
 
