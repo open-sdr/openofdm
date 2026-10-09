@@ -1,3 +1,34 @@
+# ---------------------------------------------------------------------------
+# What is worth versioning here is the RTL, the .xci that define the Xilinx IP,
+# the reference vectors, and the scripts in tools/. Everything Vivado generates
+# is not - the previously checked-in project alone was ~100MB of xsim output,
+# including Windows .exe/.obj and ROM data belonging to a license-locked core.
+# ---------------------------------------------------------------------------
+
+# --- everything tools/ produces --------------------------------------------
+/build/
+
+# --- Vivado scratch / logs -------------------------------------------------
+.Xil/
+**/.Xil/
+*.jou
+*.log
+*.pb
+*.wdb
+*.str
+**/xsim.dir/
+
+# --- Xilinx IP: keep the .xci that defines each core, drop the generated
+#     products - every script here does reset_target + generate_target, so they
+#     are rebuilt (and retargeted to the part in use) on every build ---------
+ip_repo/*/*
+!ip_repo/*/*.xci
+
+# generate_target drops shared IP HDL here, at the root of whatever tree it
+# was run from
+/ipshared/
+
+# --- legacy -----------------------------------------------------------------
 *.out
 *.vcd
 .virtualenv
