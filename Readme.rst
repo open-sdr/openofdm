@@ -248,6 +248,12 @@ Repository layout
     docs/               the upstream sphinx documentation
 
 
+Use of generative AI
+--------------------
+
+The use of AI is is documented in ``GENAI.md``
+
+
 License
 -------
 
