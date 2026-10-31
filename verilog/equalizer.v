@@ -174,10 +174,11 @@ wire signed [15:0] rot_i;
 wire signed [15:0] rot_q;
 
 wire [31:0] mag_sq;
+wire [31:0] mag_sq_scaled = (mag_sq>>3)+1; // Scaling the mag down to prevent overflow of 24 bits in divider.  Add one to prevent divide by zero, AO
 wire [31:0] prod_i;
 wire [31:0] prod_q;
-wire [31:0] prod_i_scaled = prod_i<<(`CONS_SCALE_SHIFT+1);
-wire [31:0] prod_q_scaled = prod_q<<(`CONS_SCALE_SHIFT+1); // +1 to fix the bug threshold for demodulate.v
+wire [31:0] prod_i_scaled = prod_i<<(`CONS_SCALE_SHIFT); // Removed the extra shift, changed parameter value to "5",JAO
+wire [31:0] prod_q_scaled = prod_q<<(`CONS_SCALE_SHIFT); // +1 to fix the bug threshold for demodulate.v
 
 reg signed [15:0] lts_reg1_i, lts_reg2_i, lts_reg3_i;
 reg signed [15:0] lts_reg1_q, lts_reg2_q, lts_reg3_q;
@@ -196,8 +197,8 @@ wire prod_out_strobe;
 
 wire [31:0] dividend_i = (state == S_SMOOTH_ACTSC) ? (lts_sum_i[18] == 0 ? {13'h0,lts_sum_i} : {13'h1FFF,lts_sum_i}) : (state == S_ALL_SC_PE_CORRECTION ? prod_i_scaled : 0);
 wire [31:0] dividend_q = (state == S_SMOOTH_ACTSC) ? (lts_sum_q[18] == 0 ? {13'h0,lts_sum_q} : {13'h1FFF,lts_sum_q}) : (state == S_ALL_SC_PE_CORRECTION ? prod_q_scaled : 0);
-wire [23:0] divisor_i = (state == S_SMOOTH_ACTSC) ? {21'b0,lts_mv_avg_len} : (state == S_ALL_SC_PE_CORRECTION ? mag_sq[23:0] : 1);
-wire [23:0] divisor_q = (state == S_SMOOTH_ACTSC) ? {21'b0,lts_mv_avg_len} : (state == S_ALL_SC_PE_CORRECTION ? mag_sq[23:0] : 1);
+wire [23:0] divisor_i = (state == S_SMOOTH_ACTSC) ? {21'b0,lts_mv_avg_len} : (state == S_ALL_SC_PE_CORRECTION ? mag_sq_scaled[23:0] : 1);
+wire [23:0] divisor_q = (state == S_SMOOTH_ACTSC) ? {21'b0,lts_mv_avg_len} : (state == S_ALL_SC_PE_CORRECTION ? mag_sq_scaled[23:0] : 1);
 wire div_in_stb = (state == S_SMOOTH_ACTSC) ? lts_div_in_stb : (state == S_ALL_SC_PE_CORRECTION ? prod_out_strobe : 0);
 
 reg [15:0] num_output;
@@ -205,8 +206,8 @@ wire [31:0] quotient_i;
 wire [31:0] quotient_q;
 wire [31:0] norm_i = quotient_i;
 wire [31:0] norm_q = quotient_q;
-wire [31:0] lts_div_i = quotient_i;
-wire [31:0] lts_div_q = quotient_q;
+wire [31:0] lts_div_i = quotient_i<<1; //  Moved shift on constellation for bug threshold for demodulate.v?, AO
+wire [31:0] lts_div_q = quotient_q<<1; // Be carefull on left shifts, need to saturate signal! Did not observe bits >13 ever changing
 
 wire div_out_stb;
 wire norm_out_stb = div_out_stb;
